@@ -48,7 +48,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name");
             return View();
         }
 
@@ -59,13 +59,14 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,OrderDate,CustomerId")] Order order)
         {
+            ModelState.Remove("Customer");
             if (ModelState.IsValid)
             {
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", order.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId); 
             return View(order);
         }
 
@@ -82,7 +83,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", order.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
             return View(order);
         }
 
@@ -98,6 +99,8 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("Customer");
+          
             if (ModelState.IsValid)
             {
                 try
@@ -118,7 +121,8 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", order.CustomerId);
+            
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
             return View(order);
         }
 
