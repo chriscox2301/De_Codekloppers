@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer;
-using DataAccessLayer.Models;
+using DataAccessLayer.Models; 
+using DataAccessLayer.ViewModel;
 
 namespace KE03_INTDEV_SE_2_Base.Controllers
 {
@@ -57,17 +58,23 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrderDate,CustomerId")] Order order)
+        public async Task<IActionResult> Create(OrderViewModel model)
         {
-            ModelState.Remove("Customer");
+            
             if (ModelState.IsValid)
             {
+                var order = new Order
+                {
+                    OrderDate = model.OrderDate,
+                    CustomerId = model.CustomerId
+                }; 
+
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId); 
-            return View(order);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId); 
+            return View(model);
         }
 
         // GET: Orders/Edit/5
@@ -83,8 +90,14 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             {
                 return NotFound();
             }
+            var model = new OrderViewModel
+            {
+                Id = order.Id,
+                OrderDate = order.OrderDate,
+                CustomerId = order.CustomerId
+            };
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
-            return View(order);
+            return View(model);
         }
 
         // POST: Orders/Edit/5
@@ -92,19 +105,22 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDate,CustomerId")] Order order)
+        public async Task<IActionResult> Edit(int id, OrderViewModel model)
         {
-            if (id != order.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
 
-            ModelState.Remove("Customer");
+            
           
             if (ModelState.IsValid)
             {
+                var order = await _context.Orders.FindAsync(id);
                 try
                 {
+                    order.OrderDate = model.OrderDate;
+                    order.CustomerId = model.CustomerId;
                     _context.Update(order);
                     await _context.SaveChangesAsync();
                 }
@@ -122,8 +138,8 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 return RedirectToAction(nameof(Index));
             }
             
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
-            return View(order);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId);
+            return View(model);
         }
 
         // GET: Orders/Delete/5
