@@ -2,24 +2,77 @@
     ViewData["Title"] = "Home Page";
 }
 <div class="row">
-    <div class="col">
-        <div class="card border-2">
-            <a class="btn text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
+    <div class="col-lg-3">
+        @*TODO: Products controller fetchen van Github en implementeren*@
+        <div class="card-img d-grid">
+			<a class="btn text-dark" asp-area="" asp-controller="Products" asp-action="Index">
+                    <svg height="200" width="200">
+                        <image height="200" width="200" href="Images_Icons/Products.svg"></image>
+                    </svg>
+                <div class="card-footer">Producten</div>
+            </a>
         </div>
     </div>
-    <div class="col">
-        <div class="card border-2">
-            <a class="btn text-dark" asp-area="" asp-controller="Customers" asp-action="Index">Customers</a>
+    <div class="col-lg-3">
+        <div class="card-img d-grid">
+            @*TODO: Categorys controller fetchen van Github en implementeren*@
+			<a class="btn text-dark" asp-area="" asp-controller="Categorys" asp-action="Index">
+                    <svg height="200" width="200">
+                        <image height="200" width="200" href="Images_Icons/Category.svg"></image>
+                    </svg>
+                <div class="card-footer">Categorieën</div>
+            </a>
         </div>
     </div>
-    <div class="col">
-        <div class="card border-2">
-            <a class="btn text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    <div class="col-lg-3">
+        <div class="card-body d-grid">
+            <a class="btn text-dark" asp-area="" asp-controller="Orders" asp-action="Index">
+                    <svg height="200" width="200">
+                        <image height="200" width="200" href="Images_Icons/Orders.svg"></image>
+                    </svg>
+                <div class="card-footer">Orders</div>
+            </a>
         </div>
     </div>
-    <div class="col">
-        <div class="card border-2">
-            <a class="btn text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    <div class="col-lg-3">
+        <div class="card-img d-grid">
+            <a class="btn text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                <img class="card-img" src="Images_Icons/Placeholder.png">
+                <div class="card-footer">Placeholder</div>
+            </a>
         </div>
     </div>
 </div>
+@*2-6-2026 20:15 : Icons als SVG toegevoegd aan bovenste knoppen, zie Task List voor alle TODO items*@
+
+@*Horizontale divider voor Design principles*@
+<div class="mt-4 mb-4">
+    <hr class="rounded"/>
+</div>
+
+@*Grid waarin de favorieten komen te staan.*@
+<div class="row">
+    <div class="col-3">
+        <div class="card-header border-2">template</div>
+    </div>
+    <div class="col-3">
+        <div class="card-header border-2">template</div>
+    </div>
+
+@*Spacer voor ordening*@
+</div>
+<div class="m-4">
+</div>
+
+@*Grid waarin de favorieten komen te staan.*@
+<div class="row">
+    <div class="col-3">
+        <div class="card-header border-2">template</div>
+    </div>
+    <div class="col-3">
+        <div class="card-header border-2">template</div>
+    </div>
+</div>
+
+
+

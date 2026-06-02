@@ -18,4 +18,14 @@
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images_Icons\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images_Icons\Category.png" />
+    <None Include="wwwroot\Images_Icons\Orders.png" />
+    <None Include="wwwroot\Images_Icons\Products.png" />
+  </ItemGroup>
+
 </Project>
