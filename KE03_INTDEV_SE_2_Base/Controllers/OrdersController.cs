@@ -28,7 +28,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         }
 
         // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, decimal price)
         {
             if (id == null)
             {
@@ -38,6 +38,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             var order = await _context.Orders
                 .Include(o => o.Customer)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (order == null)
             {
                 return NotFound();
