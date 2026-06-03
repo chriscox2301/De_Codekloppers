@@ -101,6 +101,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
              
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Categorie is succesvol verwijderd";
             return RedirectToAction(nameof(Index));
         }
 
