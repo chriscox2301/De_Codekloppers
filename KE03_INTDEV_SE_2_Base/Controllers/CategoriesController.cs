@@ -36,10 +36,13 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Category category)
         {
+
+            //Haalt data op om te kijken of de categorienaam al bestaat
             bool exists = _context.Categories.Any(c => c.Name == category.Name);
 
             if (exists)
             {
+                //Als naam bestaat, wordt er een foutmelding aan de "Name" property gekoppeld.
                 ModelState.AddModelError("Name", "Naam bestaat al.");
                 return View(category);
             }
@@ -48,6 +51,9 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
+
+                //Sla tijdelijke data op voor de succesmelding, info: https://medium.com/@MJQuinn/asp-net-feedback-through-tempdata-91ef08827a90
+                TempData["SuccessMessage"] = "Categorie is succesvol opgeslagen";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
