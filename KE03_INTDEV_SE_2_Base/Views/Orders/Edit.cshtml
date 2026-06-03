@@ -3,48 +3,59 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<div class="Order-terug-index">
+    <a asp-action="Index" class="btn btn-primary">
+        Terug naar lijst
+    </a>
+</div>
+<h1>Order Aanpassen</h1>
 
-<h1>Edit</h1>
 
-<h4>Order</h4>
+<h5>Order Id = @Model.Id</h5>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row width-form-order">
+    <div class="col-md-6">
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="OrderDate" type = "date" class="control-label"></label>
+            <div class="form-group form-orders">
+                <label  type = "date" class="control-label">Orderdatum</label>
                 <input asp-for="OrderDate" class="form-control" />
                 <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group form-orders">
                 <label class="control-label">Customer</label>
                 <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
+            <label>Product</label>
+            <div class="d-flex gap-2">
+                <select id="productSelect" class="form-control">
 
-            <select id="productSelect" class="form-control">
-                @foreach (var product in ViewBag.Products)
-                {
-                    <option value="@product.Id">
-                        @product.Name (€@product.Price)
-                    </option>
-                }
-            </select>
-            <button type="button"
-                    id="addProductBtn"
-                    class="btn btn-success">
-                Toevoegen
-            </button>
-            <ul id="productList" class="list-group">
+                    @foreach (var product in ViewBag.Products)
+                    {
+                        <option value="@product.Id">
+                            @product.Name (€@product.Price)
+                        </option>
+                    }
 
+                </select>
+
+                <button type="button"
+                        id="addProductBtn"
+                        class="btn btn-success">
+                    Toevoegen
+                </button>
+            </div>
+            <hr /> 
+            <ul id="productList" class = "list-group-item">
+                
                 @foreach (var product in ViewBag.Products)
                 {
                     if (Model.SelectedProductIds.Contains(product.Id))
                     {
                         <li id="product-@product.Id"
-                            class="list-group-item d-flex justify-content-between align-items-center">
+                            class="list-group-item producten-in-order">
 
                             <span>@product.Name (€@product.Price)</span>
 
@@ -58,7 +69,7 @@
 
             </ul>
 
-            <div id="hiddenProductsContainer">
+            <div id="hiddenProductsContainer" >
 
                 @foreach (var productId in Model.SelectedProductIds)
                 {
@@ -69,16 +80,16 @@
                 }
 
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group save-order">
+               
+                <input type="submit" value="Opslaan" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>  
+
 
 
 

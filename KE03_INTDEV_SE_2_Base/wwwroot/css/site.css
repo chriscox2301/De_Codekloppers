@@ -21,11 +21,37 @@ body {
   margin-bottom: 60px;
 }
 
-.form-group {
-    width : 50%; 
+.form-orders {
+    width : 100%;
+    margin-bottom: 10px; 
+
 }
 
-.list-group{
-    width: 50%; 
+
+
+.width-form-order{
+    width: 100%; 
 }
 
+.producten-in-order {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.Order-terug-index {
+    position: fixed;
+    right: 10%;
+}
+
+.save-order {
+    position: fixed;
+    right: 10%;
+    bottom: 10%;
+
+}
+
+    .save-order input {
+        padding: 10px 30px;
+        
+    }
