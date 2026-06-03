@@ -35,14 +35,14 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Category category)
-        {
+        { 
 
             //Haalt data op om te kijken of de categorienaam al bestaat
             bool exists = _context.Categories.Any(c => c.Name == category.Name);
 
             if (exists)
             {
-                //Als naam bestaat, wordt er een foutmelding aan de "Name" property gekoppeld.
+                //Als naam bestaat, wordt er een foutmelding aan de "Name" property gekoppeld: https://visualstudiomagazine.com/articles/2017/08/01/exploiting-the-validation-tools.aspx
                 ModelState.AddModelError("Name", "Naam bestaat al.");
                 return View(category);
             }
@@ -80,14 +80,26 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string? name)
         {
+            //Haalt categorie op aan de hand van id
             var category = await _context.Categories.FindAsync(id);
-            if (category != null)
+
+            //Checkt of ingevulde naam niet leeg is.
+            if (string.IsNullOrWhiteSpace(name))
             {
-                _context.Categories.Remove(category);
+                ModelState.AddModelError("name", "Typ de naam van de categorie in!");
+                return View(category);
             }
 
+            //Controleert of ingevulde naam overeenkomt met de categorie naam.
+            if(category.Name != name)
+            {
+                ModelState.AddModelError("name", "Naam komt niet overeen");
+                return View(category);
+            }
+             
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
