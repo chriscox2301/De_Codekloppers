@@ -17,6 +17,7 @@ namespace DataAccessLayer.ViewModel
         [Required]
         public int CustomerId { get; set; }
 
+        public List<int> SelectedProductIds { get; set; } = new();
     }
 }
 

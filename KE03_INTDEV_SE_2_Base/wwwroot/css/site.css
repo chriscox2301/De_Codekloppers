@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.form-group {
+    width : 50%; 
+}
+
+.list-group{
+    width: 50%; 
+}
+
