@@ -42,84 +42,157 @@ function filterTable() {
 }
 
 //JavaScript Bram(Create+UpdateOrders)
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    const productSelect = document.getElementById("productSelect");
     const addButton = document.getElementById("addProductBtn");
+    const productSelect = document.getElementById("productSelect");
     const productList = document.getElementById("productList");
     const hiddenContainer = document.getElementById("hiddenProductsContainer");
 
-    function attachRemoveHandler(button) {
+ 
+    function updateIndexes() {
+
+        const rows = productList.querySelectorAll("li");
+
+        rows.forEach((row, index) => {
+
+            const productId = row.dataset.productId;
+
+            const hiddenProduct =
+                document.getElementById(`hidden-product-${productId}`);
+
+            const hiddenQuantity =
+                document.getElementById(`hidden-quantity-${productId}`);
+
+            if (hiddenProduct) {
+                hiddenProduct.name = `Products[${index}].ProductId`;
+            }
+
+            if (hiddenQuantity) {
+                hiddenQuantity.name = `Products[${index}].Quantity`;
+            }
+        });
+    }
+
+
+    function attachRemoveButton(button) {
 
         button.addEventListener("click", function () {
 
             const li = button.closest("li");
-
-            const productId =
-                li.id.replace("product-", "");
-
-            const hidden =
-                document.getElementById("hidden-" + productId);
-
-            if (hidden) {
-                hidden.remove();
-            }
+            const productId = li.dataset.productId;
 
             li.remove();
+
+            document.getElementById(`hidden-product-${productId}`)?.remove();
+            document.getElementById(`hidden-quantity-${productId}`)?.remove();
+
+            updateIndexes();
         });
     }
 
-    // Verwijderknoppen die al bestaan (Edit pagina)
-    document.querySelectorAll(".remove-product")
-        .forEach(button => {
-            attachRemoveHandler(button);
-        });
+   
+    function attachQuantityInput(input) {
 
+        input.addEventListener("input", function () {
+
+            if (this.value < 1) {
+                this.value = 1;
+            }
+
+            const li = this.closest("li");
+            const productId = li.dataset.productId;
+
+            const hiddenQuantity =
+                document.getElementById(`hidden-quantity-${productId}`);
+
+            if (hiddenQuantity) {
+                hiddenQuantity.value = this.value;
+            }
+        });
+    }
+
+ 
     addButton.addEventListener("click", function () {
 
         const productId = productSelect.value;
-        const productName =
-            productSelect.options[productSelect.selectedIndex].text;
+        const productText = productSelect.options[productSelect.selectedIndex].text;
 
-
-        if (document.getElementById("product-" + productId)) {
+        
+        if (document.getElementById(`product-${productId}`)) {
+            alert("Dit product is al toegevoegd.");
             return;
         }
 
-
+       
         const li = document.createElement("li");
-        li.id = "product-" + productId;
-        li.className =
-            "list-group-item d-flex justify-content-between align-items-center";
+        li.id = `product-${productId}`;
+        li.dataset.productId = productId;
+        li.className = "list-group-item producten-in-order";
 
+       
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "product-info";
 
-        const productText = document.createElement("span");
-        productText.textContent = productName;
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = productText;
 
+        infoDiv.appendChild(nameSpan);
 
-        const hiddenInput = document.createElement("input");
-        hiddenInput.type = "hidden";
-        hiddenInput.name = "SelectedProductIds";
-        hiddenInput.value = productId;
-        hiddenInput.id = "hidden-" + productId;
+       
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = "product-actions";
 
+        const quantityInput = document.createElement("input");
+        quantityInput.type = "number";
+        quantityInput.min = "1";
+        quantityInput.value = "1";
+        quantityInput.className = "form-control quantity-input";
 
         const removeButton = document.createElement("button");
         removeButton.type = "button";
-        removeButton.className = "btn btn-danger btn-sm";
+        removeButton.className = "btn btn-danger btn-sm remove-product";
         removeButton.textContent = "Verwijder";
 
-        removeButton.addEventListener("click", function () {
-            li.remove();
-            hiddenInput.remove();
-        });
+        actionsDiv.appendChild(quantityInput);
+        actionsDiv.appendChild(removeButton);
 
+        
+        li.appendChild(infoDiv);
+        li.appendChild(actionsDiv);
 
-        li.appendChild(productText);
-        li.appendChild(removeButton);
-
-        hiddenContainer.appendChild(hiddenInput);
         productList.appendChild(li);
+
+      
+        const hiddenProduct = document.createElement("input");
+        hiddenProduct.type = "hidden";
+        hiddenProduct.id = `hidden-product-${productId}`;
+        hiddenProduct.value = productId;
+
+        const hiddenQuantity = document.createElement("input");
+        hiddenQuantity.type = "hidden";
+        hiddenQuantity.id = `hidden-quantity-${productId}`;
+        hiddenQuantity.value = "1";
+
+        hiddenContainer.appendChild(hiddenProduct);
+        hiddenContainer.appendChild(hiddenQuantity);
+
+      
+        attachRemoveButton(removeButton);
+        attachQuantityInput(quantityInput);
+
+        updateIndexes();
     });
 
+   
+    document.querySelectorAll(".remove-product").forEach(btn => {
+        attachRemoveButton(btn);
+    });
+
+    document.querySelectorAll(".quantity-input").forEach(input => {
+        attachQuantityInput(input);
+    });
+
+    updateIndexes();
 });

@@ -50,33 +50,55 @@
             <hr /> 
             <ul id="productList" class = "list-group-item">
                 
-                @foreach (var product in ViewBag.Products)
+                
+                @for (int i = 0; i < Model.Products.Count; i++)
                 {
-                    if (Model.SelectedProductIds.Contains(product.Id))
-                    {
-                        <li id="product-@product.Id"
-                            class="list-group-item producten-in-order">
+                    var orderProduct = Model.Products[i];
 
-                            <span>@product.Name (€@product.Price)</span>
+                    var product =
+                        ((IEnumerable<dynamic>)ViewBag.Products)
+                        .FirstOrDefault(p => p.Id == orderProduct.ProductId);
 
-                            <button type="button"
-                                    class="btn btn-danger btn-sm remove-product">
-                                Verwijder
-                            </button>
-                        </li>
-                    }
-                }
+                    if (product != null) {
+                    <li id="product-@orderProduct.ProductId"
+                        data-product-id="@orderProduct.ProductId"
+                        class="list-group-item producten-in-order">
+                        <div class="product-info">
+                        <span>
+                            @product.Name (€@product.Price)
+                        </span>
+                            </div>
+                            <div class="product-actions">
+                        <input type="number"
+                               min="1"
+                               value="@orderProduct.Quantity"
+                               class="form-control quantity-input width-input"
+                             />
+
+                        <button type="button"
+                                class="btn btn-danger btn-sm remove-product">
+                            Verwijder
+                        </button>
+                        </div> 
+
+                    </li>
+                } }
 
             </ul>
 
             <div id="hiddenProductsContainer" >
 
-                @foreach (var productId in Model.SelectedProductIds)
+                @for (int i = 0; i < Model.Products.Count; i++)
                 {
                     <input type="hidden"
-                           id="hidden-@productId"
-                           name="SelectedProductIds"
-                           value="@productId" />
+                           id="hidden-product-@Model.Products[i].ProductId"
+                           name="Products[@i].ProductId"
+                           value="@Model.Products[i].ProductId" />
+
+                    <input type="hidden"
+                           id="hidden-quantity-@Model.Products[i].ProductId"
+                           name="Products[@i].Quantity"
+                           value="@Model.Products[i].Quantity" />
                 }
 
             </div>
@@ -93,8 +115,11 @@
 
 
 
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/site.js" asp-append-version="true"></script>
+   
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
 }

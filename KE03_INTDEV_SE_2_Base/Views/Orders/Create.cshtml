@@ -18,7 +18,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group form-orders">
                 <label class="control-label">Orderdatum</label>
-                <input asp-for="OrderDate" class="form-control" />
+                <input asp-for="OrderDate"  class="form-control" />
                 <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
             <div class="form-group form-orders">
@@ -39,12 +39,16 @@
                         }
 
                     </select>
-
+                
+                    </select>
+                    <div class = "product-actions"> 
+                  
                     <button type="button"
                             id="addProductBtn"
                             class="btn btn-success">
                         Toevoegen
                     </button>
+                </div>
                 </div>
             </div>
 
@@ -52,7 +56,7 @@
 
             <h5>Producten bij Order</h5>
 
-            <li id="productList" class="list-group-item "></li>
+            <ul id="productList" class="list-group-item "></ul>
 
             <div id="hiddenProductsContainer" class="producten-in-order"></div>
 
@@ -69,5 +73,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/site.js" asp-append-version="true"></script> 
+    
 }
