@@ -20,3 +20,45 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.form-orders {
+    width : 100%;
+    margin-bottom: 10px; 
+
+}
+
+
+
+.width-form-order{
+    width: 100%; 
+}
+
+.producten-in-order {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.Order-terug-index {
+    position: fixed;
+    right: 10%;
+}
+
+.save-order {
+    position: fixed;
+    right: 10%;
+    bottom: 10%;
+
+}
+
+.save-order input {
+        padding: 10px 30px;
+        
+    }
+
+.bevestigings-bericht{
+    background-color: green; 
+    color: white; 
+    padding-bottom: 10px; 
+    padding-left: 10px; 
+}
