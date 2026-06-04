@@ -42,6 +42,8 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             //Haalt data op om te kijken of de categorienaam al bestaat
             bool exists = _context.Categories.Any(c => c.Name == category.Name);
 
+            
+
             if (exists)
             {
                 //Als naam bestaat, wordt er een foutmelding aan de "Name" property gekoppeld: https://visualstudiomagazine.com/articles/2017/08/01/exploiting-the-validation-tools.aspx
@@ -85,7 +87,16 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id, string? name)
         {
             //Haalt categorie op aan de hand van id
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            //Wanneer categorie producten bevat mag hij niet verwijderd worden.
+            if (category.Products.Count > 0)
+            {
+                TempData["SuccessMessage"] = "Categorie mag niet verwijderd worden, bevat nog producten";
+                return RedirectToAction(nameof(Index));
+            }
 
             //Checkt of ingevulde naam niet leeg is.
             if (string.IsNullOrWhiteSpace(name))
