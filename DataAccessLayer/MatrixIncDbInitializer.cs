@@ -53,6 +53,14 @@ namespace DataAccessLayer
                 new Part { Name = "Hydraulische cilinder", Description = "Openen/sluiten van zware luchtsluizen of bewegende onderdelen"},
                 new Part { Name = "Koelvloeistofpomp", Description = "Koeling van de motor of elektronische systemen."}
             };
+
+            var Catogory = new Category[]
+            {
+                new Category { Name = "Smartphones", Description = "De nieuwste mobiele telefoons en accessoires." },
+                new Category { Name = "Monitoren", Description = "Beeldschermen voor pc's in alle maten en verversingssnelheden." },
+                new Category { Name = "Accessoires", Description = "Muizen, toetsenborden, kabels en andere benodigdheden." }
+            };
+
             context.Parts.AddRange(parts);
 
             context.SaveChanges();
