@@ -22,25 +22,9 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
-        }
-
-        // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return View(category);
+            return View(await _context.Categories
+                .Include(c => c.Products)
+                .ToListAsync());
         }
 
         // GET: Categories/Create
@@ -50,67 +34,30 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         }
 
         // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Category category)
-        {
+        { 
+
+            //Haalt data op om te kijken of de categorienaam al bestaat
+            bool exists = _context.Categories.Any(c => c.Name == category.Name);
+
+            
+
+            if (exists)
+            {
+                //Als naam bestaat, wordt er een foutmelding aan de "Name" property gekoppeld: https://visualstudiomagazine.com/articles/2017/08/01/exploiting-the-validation-tools.aspx
+                ModelState.AddModelError("Name", "Naam bestaat al.");
+                return View(category);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
-        }
 
-        // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            return View(category);
-        }
-
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Category category)
-        {
-            if (id != category.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                //Sla tijdelijke data op voor de succesmelding, info: https://medium.com/@MJQuinn/asp-net-feedback-through-tempdata-91ef08827a90
+                TempData["SuccessMessage"] = "Categorie is succesvol opgeslagen";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -137,15 +84,37 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string? name)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category != null)
+            //Haalt categorie op aan de hand van id
+            var category = await _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            //Wanneer categorie producten bevat mag hij niet verwijderd worden.
+            if (category.Products.Count > 0)
             {
-                _context.Categories.Remove(category);
+                TempData["SuccessMessage"] = "Categorie mag niet verwijderd worden, bevat nog producten";
+                return RedirectToAction(nameof(Index));
             }
 
+            //Checkt of ingevulde naam niet leeg is.
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                ModelState.AddModelError("name", "Typ de naam van de categorie in!");
+                return View(category);
+            }
+
+            //Controleert of ingevulde naam overeenkomt met de categorie naam.
+            if(category.Name != name)
+            {
+                ModelState.AddModelError("name", "Naam komt niet overeen");
+                return View(category);
+            }
+             
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Categorie is succesvol verwijderd";
             return RedirectToAction(nameof(Index));
         }
 
@@ -153,5 +122,23 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         {
             return _context.Categories.Any(e => e.Id == id);
         }
+
+        //// GET: Categories/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var category = await _context.Categories
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (category == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(category);
+        //}
     }
 }

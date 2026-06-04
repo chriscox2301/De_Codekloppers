@@ -22,9 +22,10 @@ namespace DataAccessLayer
                 .WithOne(o => o.Customer)
                 .HasForeignKey(o => o.CustomerId).IsRequired();
 
+            
             modelBuilder.Entity<Category>()
                  .HasMany(p => p.Products)
-                 .WithMany(c => c.Categories);
+                 .WithOne(c => c.Category);
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Customer)
