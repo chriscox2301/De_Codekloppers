@@ -2,6 +2,11 @@
 
 @{
     ViewData["Title"] = "Index";
+    
+}
+@if (TempData["Create"] != null)
+{
+    <h2 class="bevestigings-bericht">@TempData["Create"]</h2>
 }
 
 <h1>Orders</h1>
@@ -47,7 +52,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr>  
             <td>
                 <input type="checkbox" class="form-check-input row-checkbox" />
             </td>
