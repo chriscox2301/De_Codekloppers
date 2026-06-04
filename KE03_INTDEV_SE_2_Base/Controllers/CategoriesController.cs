@@ -22,7 +22,9 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _context.Categories
+                .Include(c => c.Products)
+                .ToListAsync());
         }
 
         // GET: Categories/Create

@@ -6,19 +6,21 @@
 
 @TempData["SuccessMessage"]
 
-<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">+ Toevoegen</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Naam
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Beschrijving
+            </th>
+            <th>
+                Aantal Producten
             </th>
             <th></th>
         </tr>
@@ -33,7 +35,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Products.Count)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">Verwijderen</a>
             </td>
         </tr>
 }
