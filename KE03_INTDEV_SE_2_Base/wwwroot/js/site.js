@@ -123,3 +123,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+//JavaScript Fabian
+function zoekbalk() {
+    const query = document.getElementById('zoekterm').value.toLowerCase();
+    const rows = document.querySelectorAll('#categoryTable tbody tr')
+
+    rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        if (text.includes(query)) {
+            row.style.display = '';
+        }
+        else {
+            row.style.display = 'none';
+        }
+    });
+}

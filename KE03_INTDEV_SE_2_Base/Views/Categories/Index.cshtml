@@ -6,12 +6,15 @@
 
 @TempData["SuccessMessage"]
 
+<h1>Categorieën</h1>
 
-<p>
-    <a asp-action="Create">+ Toevoegen</a>
-</p>
-<table class="table">
-    <thead>
+<div class="d-flex flex-row justify-content-between mt-3">
+    <input type="text" class="form-control w-50" id="zoekterm" oninput="zoekbalk()" placeholder="Zoeken in categorieën" />
+    <a asp-action="Create" class="btn btn-primary">+ Toevoegen</a>
+</div>
+<div class="mt-2">
+<table class="table table-striped" id="categoryTable">
+    <thead class="table-dark">
         <tr>
             <th>
                 ID
@@ -22,7 +25,7 @@
             <th>
                 Beschrijving
             </th>
-            <th>
+            <th class="text-center">
                 Aantal Producten
             </th>
             <th>
@@ -34,21 +37,23 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @item.Id
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @item.Name
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @item.Description
+            </td>
+            <td class="text-center">
+                @item.Products.Count
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Products.Count)
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.Id">Verwijderen</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">Verwijderen</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>
+<script src="~/js/site.js"></script>
