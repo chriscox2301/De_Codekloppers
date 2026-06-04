@@ -29,6 +29,7 @@
                 <input type="checkbox" class="form-check-input" id="selectAll" />
             </th>
             <th>Product</th>
+            <th>Product Code</th>
             <th>Voorraad</th>
             <th>Categorie</th>
             <th>Prijs</th>
@@ -43,9 +44,10 @@
                     <input type="checkbox" class="form-check-input row-checkbox" />
                 </td>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.ProductCode)</td>
                 <td>@Html.DisplayFor(modelItem => item.Stock)</td>
-                @* <td>@string.Join(", ", item.Categories.Select(c => c.Name))</td> *@
-                <td>€ @Html.DisplayFor(modelItem => item.Price)</td>
+                <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
+                <td>€@Html.DisplayFor(modelItem => item.Price)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Bewerken</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
