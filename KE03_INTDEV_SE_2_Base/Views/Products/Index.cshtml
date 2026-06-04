@@ -1,0 +1,61 @@
+@model IEnumerable<DataAccessLayer.Models.Product>
+
+@{
+    ViewData["Title"] = "Producten";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex gap-2">
+        <input type="text" id="searchInput" class="form-control" placeholder="Zoek product..."
+               oninput="filterTable()" style="width: 250px;" />
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Meer
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Exporteren</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#">Geselecteerde verwijderen</a></li>
+            </ul>
+        </div>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">+ Product toevoegen</a>
+</div>
+
+<table class="table table-hover" id="productTable">
+    <thead class="table-light">
+        <tr>
+            <th style="width: 40px;">
+                <input type="checkbox" class="form-check-input" id="selectAll" />
+            </th>
+            <th>Product</th>
+            <th>Product Code</th>
+            <th>Voorraad</th>
+            <th>Categorie</th>
+            <th>Prijs</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" class="form-check-input row-checkbox" />
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.ProductCode)</td>
+                <td>@Html.DisplayFor(modelItem => item.Stock)</td>
+                <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
+                <td>€@Html.DisplayFor(modelItem => item.Price)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Bewerken</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Verwijderen</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="~/js/site.js"></script>

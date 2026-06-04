@@ -1,0 +1,84 @@
+﻿@model DataAccessLayer.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+<div>
+    <div class="h1">
+        Order#@Html.DisplayFor(model => model.Id)
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+
+            <div class="h5">Klantgegevens</div>
+
+            <div class="row">
+
+                <div class="col-4">
+                Datum:
+                </div>
+
+                <div class="col-2">
+                    @Html.DisplayFor(model => model.OrderDate)
+                </div>
+                <div class="col-4">
+                Klant:
+                </div>
+
+				<div class="col-2">
+                @Html.DisplayFor(model => model.Customer.Name)
+			    </div>
+                <div class="col-4">
+                    Adres:
+                </div>
+
+                <div class="col-2">
+                    @Html.DisplayFor(model => model.Customer.Address)
+                </div>
+
+			</div>
+
+		</div>
+
+        <div class="col-6">
+            <div class="row">
+                <div class="col">
+                <div class="container-fluid bg-secondary">
+                    <div>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between">
+                                Item1
+                                @* @Html.DisplayFor(model => model.Products) *@
+                                <span class="badge bg-primary rounded-pill">3</span>
+                                €60,00
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                Item2
+                                @* @Html.DisplayFor(model => model.Products) *@
+                                <span class="badge bg-primary rounded-pill">2</span>
+                                €45,50
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                Item3
+                                @* @Html.DisplayFor(model => model.Products) *@
+                                <span class="badge bg-primary rounded-pill">5</span>
+                                €19,99
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a class="btn btn-outline-primary" asp-action="Index">Back to List</a>
+</div>

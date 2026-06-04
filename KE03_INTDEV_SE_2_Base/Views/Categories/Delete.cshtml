@@ -1,0 +1,43 @@
+﻿@model DataAccessLayer.Models.Category
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3>Weet u zeker dat u deze categorie wil verwijderen?</h3>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Naam:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Beschrijving:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete" method="post">
+        <label>Typ de naam van de categorie ter bevestiging</label>
+        <input type="text" name="name" class="form-control" />
+        <span class="text-danger">
+            @Html.ValidationMessage("name")
+        </span>
+
+        <div>
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Verwijderen" class="btn btn-danger" />
+            <a asp-action="Index">Annuleren</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

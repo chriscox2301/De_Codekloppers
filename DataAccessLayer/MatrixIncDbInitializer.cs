@@ -38,11 +38,20 @@ namespace DataAccessLayer
             };  
             context.Orders.AddRange(orders);
 
+            var Categories = new Category[]
+            {
+                new Category { Name = "Smartphones", Description = "De nieuwste mobiele telefoons en accessoires." },
+                new Category { Name = "Monitoren", Description = "Beeldschermen voor pc's in alle maten en verversingssnelheden." },
+                new Category { Name = "Accessoires", Description = "Muizen, toetsenborden, kabels en andere benodigdheden." }
+            };
+
+            context.Categories.AddRange(Categories);
+
             var products = new Product[]
             {
-                new Product { Name = "Nebuchadnezzar", Description = "Het schip waarop Neo voor het eerst de echte wereld leert kennen", Price = 10000.00m },
-                new Product { Name = "Jack-in Chair", Description = "Stoel met een rugsteun en metalen armen waarin mensen zitten om ingeplugd te worden in de Matrix via een kabel in de nekpoort", Price = 500.50m },
-                new Product { Name = "EMP (Electro-Magnetic Pulse) Device", Description = "Wapentuig op de schepen van Zion", Price = 129.99m }
+                new Product { Name = "Nebuchadnezzar",ProductCode = "AAAAAAAA", Description = "Het schip waarop Neo voor het eerst de echte wereld leert kennen", Price = 10000.00m, CategoryId = 1},
+                new Product { Name = "Jack-in Chair", ProductCode = "1AAAAAAA", Description = "Stoel met een rugsteun en metalen armen waarin mensen zitten om ingeplugd te worden in de Matrix via een kabel in de nekpoort", Price = 500.50m, CategoryId = 1},
+                new Product { Name = "EMP (Electro-Magnetic Pulse) Device",ProductCode = "11AAAAAA" ,Description = "Wapentuig op de schepen van Zion", Price = 129.99m, CategoryId = 1}
             };
             context.Products.AddRange(products);
 
@@ -53,7 +62,16 @@ namespace DataAccessLayer
                 new Part { Name = "Hydraulische cilinder", Description = "Openen/sluiten van zware luchtsluizen of bewegende onderdelen"},
                 new Part { Name = "Koelvloeistofpomp", Description = "Koeling van de motor of elektronische systemen."}
             };
+
             context.Parts.AddRange(parts);
+
+            var Category = new Category[]
+            {
+                new Category { Name = "Smartphones", Description = "De nieuwste mobiele telefoons en accessoires." },
+                new Category { Name = "Monitoren", Description = "Beeldschermen voor pc's in alle maten en verversingssnelheden." },
+                new Category { Name = "Accessoires", Description = "Muizen, toetsenborden, kabels en andere benodigdheden." }
+            };
+            context.Categories.AddRange(Category);
 
             context.SaveChanges();
 
@@ -61,3 +79,4 @@ namespace DataAccessLayer
         }
     }
 }
+ 
