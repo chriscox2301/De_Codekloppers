@@ -2,7 +2,24 @@
     const query = document.getElementById('searchInput').value.toLowerCase();
     const rows = document.querySelectorAll('#productTable tbody tr');
 
-﻿//JavaScript Binck(Details+Delete+IndexOrders)
+    rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const selectAll = document.getElementById('selectAll');
+    if (!selectAll) return;
+
+    selectAll.addEventListener('change', () => {
+        document.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.checked = selectAll.checked;
+        });
+    });
+});
+
+//JavaScript Binck(Details+Delete+IndexOrders)
 document.addEventListener('DOMContentLoaded', () => {
     const selectAll = document.getElementById('selectAll');
     if (!selectAll) return;
@@ -24,15 +41,6 @@ function filterTable() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const selectAll = document.getElementById('selectAll');
-    if (!selectAll) return;
-
-    selectAll.addEventListener('change', () => {
-        document.querySelectorAll('.row-checkbox').forEach(cb => {
-            cb.checked = selectAll.checked;
-        });
-    });
 //JavaScript Bram(Create+UpdateOrders)
 document.addEventListener("DOMContentLoaded", function () {
 
