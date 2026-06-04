@@ -2,8 +2,18 @@
 
 @{
     ViewData["Title"] = "Index";
+    
+}
+@if (TempData["Create"] != null)
+{
+    <h2 class="bevestigings-bericht">@TempData["Create"]</h2>
 }
 
+@if (TempData["Edit"] != null)
+{
+    <h2 class="bevestigings-bericht">@TempData["Edit"]</h2>
+}
+ 
 <h1>Index</h1>
 
 <p>
@@ -23,7 +33,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr>  
             <td>
                 @Html.DisplayFor(modelItem => item.OrderDate)
             </td>

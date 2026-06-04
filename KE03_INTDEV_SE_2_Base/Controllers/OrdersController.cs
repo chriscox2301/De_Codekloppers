@@ -23,6 +23,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
+            
             var matrixIncDbContext = _context.Orders.Include(o => o.Customer);
             return View(await matrixIncDbContext.ToListAsync());
         }
@@ -82,13 +83,14 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 _context.Orders.Add(order);
 
                 await _context.SaveChangesAsync();
+                TempData["Create"] = "Order is succesvol aangemaakt"; 
 
                 return RedirectToAction(nameof(Index));
             }
 
 
-            ViewBag.Products = _context.Products.ToList(); 
-
+            ViewBag.Products = _context.Products.ToList();
+          
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId); 
             return View(model);
         }
@@ -120,6 +122,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             };
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
             ViewBag.Products = await _context.Products.ToListAsync();
+         
             return View(model);
         }
 
@@ -149,22 +152,22 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                     order.OrderDate = model.OrderDate;
                     order.CustomerId = model.CustomerId;
 
-                    // Oude producten verwijderen
+                  
                     order.Products.Clear();
 
-                    // Nieuwe producten ophalen
+                    
                     var products = await _context.Products
                         .Where(p =>
                             model.SelectedProductIds.Contains(p.Id))
                         .ToListAsync();
 
-                    // Nieuwe producten koppelen
+                    
                     foreach (var product in products)
                     {
                         order.Products.Add(product);
                     }
 
-                    //_context.Update(order);
+                   
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -178,6 +181,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                         throw;
                     }
                 }
+                TempData["Create"] = "Orderinformatie is succesvol aangepast "; 
                 return RedirectToAction(nameof(Index));
             }
             
