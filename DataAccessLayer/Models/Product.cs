@@ -23,10 +23,12 @@ namespace DataAccessLayer.Models
 
         public int? Stock { get; set; }
 
+        public int CategoryId { get; set; }
+
         public ICollection<Order> Orders { get; } = new List<Order>();
 
         public ICollection<Part> Parts { get; } = new List<Part>();
 
-        public ICollection<Category> Categories { get; } = new List<Category>();
+        public Category Category { get; set; }
     }
 }

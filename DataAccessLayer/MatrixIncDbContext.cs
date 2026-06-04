@@ -24,7 +24,7 @@ namespace DataAccessLayer
 
             modelBuilder.Entity<Category>()
                  .HasMany(p => p.Products)
-                 .WithMany(c => c.Categories);
+                 .WithOne(c => c.Category);
 
             //modelBuilder.Entity<Order>()
             //    .HasOne(o => o.Customer)
