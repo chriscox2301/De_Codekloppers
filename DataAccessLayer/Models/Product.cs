@@ -29,6 +29,6 @@ namespace DataAccessLayer.Models
 
         public ICollection<Part> Parts { get; } = new List<Part>();
 
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
     }
 }
