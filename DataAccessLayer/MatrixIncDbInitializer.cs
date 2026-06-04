@@ -65,6 +65,14 @@ namespace DataAccessLayer
 
             context.Parts.AddRange(parts);
 
+            var Category = new Category[]
+            {
+                new Category { Name = "Smartphones", Description = "De nieuwste mobiele telefoons en accessoires." },
+                new Category { Name = "Monitoren", Description = "Beeldschermen voor pc's in alle maten en verversingssnelheden." },
+                new Category { Name = "Accessoires", Description = "Muizen, toetsenborden, kabels en andere benodigdheden." }
+            };
+            context.Categories.AddRange(Category);
+
             context.SaveChanges();
 
             context.Database.EnsureCreated();

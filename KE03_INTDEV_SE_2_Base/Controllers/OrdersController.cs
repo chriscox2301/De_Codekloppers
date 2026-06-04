@@ -23,12 +23,13 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
+            
             var matrixIncDbContext = _context.Orders.Include(o => o.Customer);
             return View(await matrixIncDbContext.ToListAsync());
         }
 
         // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, decimal price)
         {
             if (id == null)
             {
@@ -38,6 +39,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             var order = await _context.Orders
                 .Include(o => o.Customer)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (order == null)
             {
                 return NotFound();
@@ -50,6 +52,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         public IActionResult Create()
         {
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name");
+            ViewBag.Products = _context.Products.ToList(); 
             return View();
         }
 
@@ -67,12 +70,28 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 {
                     OrderDate = model.OrderDate,
                     CustomerId = model.CustomerId
-                }; 
+                };
 
-                _context.Add(order);
+                var products = await _context.Products
+                .Where(p => model.SelectedProductIds.Contains(p.Id))
+                .ToListAsync();
+
+                foreach (var product in products)
+                {
+                    order.Products.Add(product);
+                }
+
+                _context.Orders.Add(order);
+
                 await _context.SaveChangesAsync();
+                TempData["Create"] = "Order is succesvol aangemaakt"; 
+
                 return RedirectToAction(nameof(Index));
             }
+
+
+            ViewBag.Products = _context.Products.ToList();
+          
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId); 
             return View(model);
         }
@@ -85,7 +104,10 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+            .Include(o => o.Products)
+            .FirstOrDefaultAsync(o => o.Id == id); ;
+
             if (order == null)
             {
                 return NotFound();
@@ -94,9 +116,14 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             {
                 Id = order.Id,
                 OrderDate = order.OrderDate,
-                CustomerId = order.CustomerId
+                CustomerId = order.CustomerId, 
+                SelectedProductIds = order.Products
+                .Select(p => p.Id)
+                .ToList()
             };
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
+            ViewBag.Products = await _context.Products.ToListAsync();
+         
             return View(model);
         }
 
@@ -116,17 +143,37 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
           
             if (ModelState.IsValid)
             {
-                var order = await _context.Orders.FindAsync(id);
+  
+
+                var order = await _context.Orders
+                 .Include(o => o.Products)
+                 .FirstOrDefaultAsync(o => o.Id == id);
                 try
                 {
                     order.OrderDate = model.OrderDate;
                     order.CustomerId = model.CustomerId;
-                    _context.Update(order);
+
+                  
+                    order.Products.Clear();
+
+                    
+                    var products = await _context.Products
+                        .Where(p =>
+                            model.SelectedProductIds.Contains(p.Id))
+                        .ToListAsync();
+
+                    
+                    foreach (var product in products)
+                    {
+                        order.Products.Add(product);
+                    }
+
+                   
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.Id))
+                    if (!OrderExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -135,10 +182,12 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                         throw;
                     }
                 }
+                TempData["Create"] = "Orderinformatie is succesvol aangepast "; 
                 return RedirectToAction(nameof(Index));
             }
             
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId);
+            ViewBag.Products = await _context.Products.ToListAsync();
             return View(model);
         }
 

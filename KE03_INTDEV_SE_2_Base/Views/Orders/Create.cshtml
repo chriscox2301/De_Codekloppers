@@ -3,35 +3,71 @@
 @{
     ViewData["Title"] = "Create";
 }
+<div class="Order-terug-index">
+    <a asp-action="Index" class="btn btn-primary">
+        Terug naar lijst
+    </a>
+</div>
+<h1>Order Aanmaken</h1>
 
-<h1>Create</h1>
 
-<h4>Order</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row width-form-order">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="OrderDate" class="control-label"></label>
+            <div class="form-group form-orders">
+                <label class="control-label">Orderdatum</label>
                 <input asp-for="OrderDate" class="form-control" />
                 <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
+            <div class="form-group form-orders">
+                <label  class="control-label">Customer</label>
                 <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group form-orders">
+                <label>Product</label>
+
+                <div class="d-flex gap-2">
+                    <select id="productSelect" class="form-control">
+
+                        @foreach (var product in ViewBag.Products)
+                        {
+                            <option value="@product.Id">
+                                @product.Name (€@product.Price)
+                            </option>
+                        }
+
+                    </select>
+
+                    <button type="button"
+                            id="addProductBtn"
+                            class="btn btn-success">
+                        Toevoegen
+                    </button>
+                </div>
+            </div>
+
+            <hr />
+
+            <h5>Producten bij Order</h5>
+
+            <li id="productList" class="list-group-item "></li>
+
+            <div id="hiddenProductsContainer" class="producten-in-order"></div>
+
+
+            <div class="form-group  save-order">
+                <input type="submit" value="Opslaan" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/site.js" asp-append-version="true"></script> 
 }
