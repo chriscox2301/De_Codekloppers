@@ -22,7 +22,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await _context.Products.Include(p => p.Categories).ToListAsync());
         }
 
         // GET: Products/Details/5
