@@ -47,6 +47,7 @@
             @Html.DisplayFor(model => model.Category.Description)
         </dd>
     </dl>
+    <img src="https://barcodeapi.org/api/39/@Model.ProductCode"/>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
