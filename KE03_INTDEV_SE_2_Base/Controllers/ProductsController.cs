@@ -22,7 +22,8 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            var matrixIncDbContext = _context.Products.Include(p => p.Category);
+            return View(await matrixIncDbContext.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -34,6 +35,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             }
 
             var product = await _context.Products
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -46,6 +48,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ProductCode,Description,Price,Stock")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,ProductCode,Description,Price,Stock,CategoryId")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +65,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description", product.CategoryId);
             return View(product);
         }
 
@@ -78,6 +82,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             {
                 return NotFound();
             }
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description", product.CategoryId);
             return View(product);
         }
 
@@ -86,7 +91,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ProductCode,Description,Price,Stock")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ProductCode,Description,Price,Stock,CategoryId")] Product product)
         {
             if (id != product.Id)
             {
@@ -113,6 +118,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description", product.CategoryId);
             return View(product);
         }
 
@@ -125,6 +131,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             }
 
             var product = await _context.Products
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
