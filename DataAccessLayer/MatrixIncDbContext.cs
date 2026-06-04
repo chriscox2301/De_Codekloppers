@@ -15,6 +15,8 @@ namespace DataAccessLayer
         public DbSet<Part> Parts { get; set; }
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>()
@@ -32,9 +34,22 @@ namespace DataAccessLayer
                 .WithMany(c => c.Orders)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Product>()
-                .HasMany(p => p.Orders)
-                .WithMany(o => o.Products);
+            modelBuilder.Entity<OrderProduct>()
+                .HasKey(op => new
+                {
+                    op.OrderId,
+                    op.ProductId
+                });
+
+            modelBuilder.Entity<OrderProduct>()
+                .HasOne(op => op.Order)
+                .WithMany(o => o.OrderProducts)
+                .HasForeignKey(op => op.OrderId);
+
+            modelBuilder.Entity<OrderProduct>()
+                .HasOne(op => op.Product)
+                .WithMany(p => p.OrderProducts)
+                .HasForeignKey(op => op.ProductId);
 
             modelBuilder.Entity<Part>()
                 .HasMany(p => p.Products)

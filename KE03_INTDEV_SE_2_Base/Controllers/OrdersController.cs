@@ -72,14 +72,18 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                     CustomerId = model.CustomerId
                 };
 
-                var products = await _context.Products
-                .Where(p => model.SelectedProductIds.Contains(p.Id))
-                .ToListAsync();
-
-                foreach (var product in products)
+                foreach (var item in model.Products)
                 {
-                    order.Products.Add(product);
+                    order.OrderProducts.Add(
+                        new OrderProduct
+                        {
+                            ProductId = item.ProductId,
+                            Quantity = item.Quantity
+                        });
                 }
+
+
+
 
                 _context.Orders.Add(order);
 
@@ -105,8 +109,9 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             }
 
             var order = await _context.Orders
-            .Include(o => o.Products)
-            .FirstOrDefaultAsync(o => o.Id == id); ;
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
             {
@@ -116,14 +121,24 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             {
                 Id = order.Id,
                 OrderDate = order.OrderDate,
-                CustomerId = order.CustomerId, 
-                SelectedProductIds = order.Products
-                .Select(p => p.Id)
-                .ToList()
+                CustomerId = order.CustomerId,
+                Products = order.OrderProducts
+            .Select(op => new OrderProductViewModel
+            {
+                ProductId = op.ProductId,
+                Quantity = op.Quantity
+            })
+            .ToList()
+
             };
+
+
+    
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
             ViewBag.Products = await _context.Products.ToListAsync();
-         
+
+          
+
             return View(model);
         }
 
@@ -146,7 +161,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
   
 
                 var order = await _context.Orders
-                 .Include(o => o.Products)
+                 .Include(o => o.OrderProducts)
                  .FirstOrDefaultAsync(o => o.Id == id);
                 try
                 {
@@ -154,18 +169,20 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                     order.CustomerId = model.CustomerId;
 
                   
-                    order.Products.Clear();
+                    order.OrderProducts.Clear();
 
                     
-                    var products = await _context.Products
-                        .Where(p =>
-                            model.SelectedProductIds.Contains(p.Id))
-                        .ToListAsync();
+
 
                     
-                    foreach (var product in products)
+                    foreach (var product in model.Products)
                     {
-                        order.Products.Add(product);
+                        order.OrderProducts.Add(new OrderProduct
+                         {
+                            OrderId = order.Id,
+                            ProductId = product.ProductId,
+                            Quantity = product.Quantity
+                         });
                     }
 
                    
