@@ -51,7 +51,7 @@
                     <div>
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between">
-                                Item1ss
+                                Item1
                                 @* @Html.DisplayFor(model => model.Products) *@
                                 <span class="badge bg-primary rounded-pill">3</span>
                                 €60,00
@@ -79,6 +79,6 @@
 
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a class="btn btn-outline-primary" asp-action="Index">Back to List</a>
 </div>
