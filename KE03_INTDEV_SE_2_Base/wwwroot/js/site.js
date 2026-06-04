@@ -1,3 +1,7 @@
+﻿function filterTable() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('#productTable tbody tr');
+
 ﻿//JavaScript Binck(Details+Delete+IndexOrders)
 document.addEventListener('DOMContentLoaded', () => {
     const selectAll = document.getElementById('selectAll');
@@ -20,6 +24,15 @@ function filterTable() {
     });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const selectAll = document.getElementById('selectAll');
+    if (!selectAll) return;
+
+    selectAll.addEventListener('change', () => {
+        document.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.checked = selectAll.checked;
+        });
+    });
 //JavaScript Bram(Create+UpdateOrders)
 document.addEventListener("DOMContentLoaded", function () {
 
