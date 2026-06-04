@@ -43,7 +43,7 @@
                     <input type="checkbox" class="form-check-input row-checkbox" />
                 </td>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>-</td>
+                <td>@Html.DisplayFor(modelItem => item.Stock)</td>
                 @* <td>@string.Join(", ", item.Categories.Select(c => c.Name))</td> *@
                 <td>€ @Html.DisplayFor(modelItem => item.Price)</td>
                 <td>
