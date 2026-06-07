@@ -8,14 +8,12 @@
     <div class="d-flex gap-2">
         <input type="text" id="searchInput" class="form-control" placeholder="Zoek product..."
                oninput="filterTable()" style="width: 250px;" />
-        <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                Meer
-            </button>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Sorteren</button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Exporteren</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="#">Geselecteerde verwijderen</a></li>
+                <li><a class="dropdown-item" href="#">Filter 1</a></li>
+                <li><a class="dropdown-item" href="#">Filter 2</a></li>
+                <li><a class="dropdown-item" href="#">Filter 3</a></li>
             </ul>
         </div>
     </div>
