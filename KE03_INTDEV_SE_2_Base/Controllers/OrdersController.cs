@@ -85,32 +85,35 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                             Quantity = quantity
                         });
                     }
-                foreach (var item in model.Products)
-                {
-                    order.OrderProducts.Add(
-                        new OrderProduct
-                        {
-                            ProductId = item.ProductId,
-                            Quantity = item.Quantity
-                        });
+                    foreach (var item in model.Products)
+                    {
+                        order.OrderProducts.Add(
+                            new OrderProduct
+                            {
+                                ProductId = item.ProductId,
+                                Quantity = item.Quantity
+                            });
+                    }
+
+
+
+
+                    _context.Orders.Add(order);
+
+                    await _context.SaveChangesAsync();
+                    TempData["Create"] = "Order is succesvol aangemaakt";
+
+                    return RedirectToAction(nameof(Index));
                 }
 
 
+                ViewBag.Products = _context.Products.ToList();
 
-
-                _context.Orders.Add(order);
-
-                await _context.SaveChangesAsync();
-                TempData["Create"] = "Order is succesvol aangemaakt"; 
-
-                return RedirectToAction(nameof(Index));
+                ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId);
+                return View(model);
             }
 
-
-            ViewBag.Products = _context.Products.ToList();
-
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId); 
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Orders/Edit/5
