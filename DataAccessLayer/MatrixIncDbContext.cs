@@ -12,6 +12,7 @@ namespace DataAccessLayer
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Part> Parts { get; set; }
         public DbSet<Category> Categories { get; set; }
 
@@ -24,7 +25,7 @@ namespace DataAccessLayer
                 .WithOne(o => o.Customer)
                 .HasForeignKey(o => o.CustomerId).IsRequired();
 
-            
+
             modelBuilder.Entity<Category>()
                  .HasMany(p => p.Products)
                  .WithOne(c => c.Category);
@@ -35,11 +36,7 @@ namespace DataAccessLayer
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<OrderProduct>()
-                .HasKey(op => new
-                {
-                    op.OrderId,
-                    op.ProductId
-                });
+                .HasKey(op => new { op.OrderId, op.ProductId });
 
             modelBuilder.Entity<OrderProduct>()
                 .HasOne(op => op.Order)

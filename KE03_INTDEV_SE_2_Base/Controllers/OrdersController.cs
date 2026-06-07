@@ -38,6 +38,8 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.Customer)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (order == null)
@@ -63,7 +65,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OrderViewModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
                 var order = new Order
@@ -72,6 +74,17 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                     CustomerId = model.CustomerId
                 };
 
+                foreach (var productId in model.SelectedProductIds)
+                {
+                    var quantity = model.ProductQuantities.ContainsKey(productId) ? model.ProductQuantities[productId] : 1;
+                    if (quantity > 0)
+                    {
+                        order.OrderProducts.Add(new OrderProduct
+                        {
+                            ProductId = productId,
+                            Quantity = quantity
+                        });
+                    }
                 foreach (var item in model.Products)
                 {
                     order.OrderProducts.Add(
@@ -95,7 +108,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
 
 
             ViewBag.Products = _context.Products.ToList();
-          
+
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId); 
             return View(model);
         }
@@ -109,9 +122,9 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             }
 
             var order = await _context.Orders
-                .Include(o => o.OrderProducts)
-                .ThenInclude(op => op.Product)
-                .FirstOrDefaultAsync(o => o.Id == id);
+            .Include(o => o.OrderProducts)
+            .ThenInclude(op => op.Product)
+            .FirstOrDefaultAsync(o => o.Id == id); ;
 
             if (order == null)
             {
@@ -121,15 +134,12 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             {
                 Id = order.Id,
                 OrderDate = order.OrderDate,
-                CustomerId = order.CustomerId,
-                Products = order.OrderProducts
-            .Select(op => new OrderProductViewModel
-            {
-                ProductId = op.ProductId,
-                Quantity = op.Quantity
-            })
-            .ToList()
-
+                CustomerId = order.CustomerId, 
+                SelectedProductIds = order.OrderProducts
+                .Select(op => op.ProductId)
+                .ToList(),
+                ProductQuantities = order.OrderProducts
+                .ToDictionary(op => op.ProductId, op => op.Quantity)
             };
 
 
@@ -168,25 +178,24 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                     order.OrderDate = model.OrderDate;
                     order.CustomerId = model.CustomerId;
 
-                  
+
                     order.OrderProducts.Clear();
 
-                    
-
-
-                    
-                    foreach (var product in model.Products)
+                    foreach (var productId in model.SelectedProductIds)
                     {
-                        order.OrderProducts.Add(new OrderProduct
-                         {
-                            OrderId = order.Id,
-                            ProductId = product.ProductId,
-                            Quantity = product.Quantity
-                         });
-                    }
+                        var quantity = model.ProductQuantities.ContainsKey(productId) ? model.ProductQuantities[productId] : 1;
+                        if (quantity > 0)
+                        {
+                            order.OrderProducts.Add(new OrderProduct
+                            {
+                                ProductId = productId,
+                                Quantity = quantity,
+                            });
+                        }
 
-                   
-                    await _context.SaveChangesAsync();
+
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
