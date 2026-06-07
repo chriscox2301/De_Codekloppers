@@ -38,6 +38,8 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.Customer)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (order == null)
@@ -63,7 +65,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OrderViewModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
                 var order = new Order
@@ -72,13 +74,17 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                     CustomerId = model.CustomerId
                 };
 
-                var products = await _context.Products
-                .Where(p => model.SelectedProductIds.Contains(p.Id))
-                .ToListAsync();
-
-                foreach (var product in products)
+                foreach (var productId in model.SelectedProductIds)
                 {
-                    order.Products.Add(product);
+                    var quantity = model.ProductQuantities.ContainsKey(productId) ? model.ProductQuantities[productId] : 1;
+                    if (quantity > 0)
+                    {
+                        order.OrderProducts.Add(new OrderProduct
+                        {
+                            ProductId = productId,
+                            Quantity = quantity
+                        });
+                    }
                 }
 
                 _context.Orders.Add(order);
@@ -91,7 +97,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
 
 
             ViewBag.Products = _context.Products.ToList();
-          
+
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId); 
             return View(model);
         }
@@ -105,7 +111,8 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             }
 
             var order = await _context.Orders
-            .Include(o => o.Products)
+            .Include(o => o.OrderProducts)
+            .ThenInclude(op => op.Product)
             .FirstOrDefaultAsync(o => o.Id == id); ;
 
             if (order == null)
@@ -117,9 +124,11 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 Id = order.Id,
                 OrderDate = order.OrderDate,
                 CustomerId = order.CustomerId, 
-                SelectedProductIds = order.Products
-                .Select(p => p.Id)
-                .ToList()
+                SelectedProductIds = order.OrderProducts
+                .Select(op => op.ProductId)
+                .ToList(),
+                ProductQuantities = order.OrderProducts
+                .ToDictionary(op => op.ProductId, op => op.Quantity)
             };
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
             ViewBag.Products = await _context.Products.ToListAsync();
@@ -146,30 +155,31 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
   
 
                 var order = await _context.Orders
-                 .Include(o => o.Products)
+                 .Include(o => o.OrderProducts)
                  .FirstOrDefaultAsync(o => o.Id == id);
                 try
                 {
                     order.OrderDate = model.OrderDate;
                     order.CustomerId = model.CustomerId;
 
-                  
-                    order.Products.Clear();
 
-                    
-                    var products = await _context.Products
-                        .Where(p =>
-                            model.SelectedProductIds.Contains(p.Id))
-                        .ToListAsync();
+                    order.OrderProducts.Clear();
 
-                    
-                    foreach (var product in products)
+                    foreach (var productId in model.SelectedProductIds)
                     {
-                        order.Products.Add(product);
-                    }
+                        var quantity = model.ProductQuantities.ContainsKey(productId) ? model.ProductQuantities[productId] : 1;
+                        if (quantity > 0)
+                        {
+                            order.OrderProducts.Add(new OrderProduct
+                            {
+                                ProductId = productId,
+                                Quantity = quantity,
+                            });
+                        }
 
-                   
-                    await _context.SaveChangesAsync();
+
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {

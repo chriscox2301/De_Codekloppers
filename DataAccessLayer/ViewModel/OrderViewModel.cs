@@ -18,6 +18,8 @@ namespace DataAccessLayer.ViewModel
         public int CustomerId { get; set; }
 
         public List<int> SelectedProductIds { get; set; } = new();
+
+        public Dictionary<int, int> ProductQuantities { get; set; } = new();
     }
 }
 

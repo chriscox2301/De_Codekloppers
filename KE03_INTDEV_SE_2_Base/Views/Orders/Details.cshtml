@@ -18,67 +18,89 @@
 
             <div class="row">
 
-                <div class="col-4">
+                <div class="col-3 fw-bold">
                 Datum:
                 </div>
 
-                <div class="col-2">
+                <div class="col-3">
                     @Html.DisplayFor(model => model.OrderDate)
                 </div>
-                <div class="col-4">
+                <div class="col-3 fw-bold">
                 Klant:
                 </div>
 
-				<div class="col-2">
+				<div class="col-3">
                 @Html.DisplayFor(model => model.Customer.Name)
 			    </div>
-                <div class="col-4">
-                    Adres:
+                <div class="col-3 fw-bold">
+                Adres:
                 </div>
 
-                <div class="col-2">
+                <div class="col-3">
                     @Html.DisplayFor(model => model.Customer.Address)
                 </div>
-
 			</div>
 
 		</div>
 
         <div class="col-6">
-            <div class="row">
-                <div class="col">
-                <div class="container-fluid bg-secondary">
-                    <div>
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between">
-                                Item1
-                                @* @Html.DisplayFor(model => model.Products) *@
-                                <span class="badge bg-primary rounded-pill">3</span>
-                                €60,00
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                Item2
-                                @* @Html.DisplayFor(model => model.Products) *@
-                                <span class="badge bg-primary rounded-pill">2</span>
-                                €45,50
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                Item3
-                                @* @Html.DisplayFor(model => model.Products) *@
-                                <span class="badge bg-primary rounded-pill">5</span>
-                                €19,99
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                </div>
-            </div>
+            <div class="h5">Producten</div>
+            <table class="table table-borderless table-striped">
+                <thead class="bg-secondary text-white">
+                    <tr>
+						<th>Product</th>
+						<th>Aantal</th>
+                        <th>Prijs per stuk</th>						
+                    </tr>
+                </thead>
+                <tbody class="border rounded">
+                    @if (Model.OrderProducts.Any())
+                    {
+                        @foreach (var orderProduct in Model.OrderProducts)
+                        {
+                            <tr>
+								<td>@orderProduct.Product.Name</td>
+								<td class="align-middle"><span class="d-flex fw-bold text-white w-50 justify-content-center bg-primary rounded-pill">@orderProduct.Quantity</span></td>
+                                <td>€@orderProduct.Product.Price.ToString("F2")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">Geen producten in deze order</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="d-flex h5 justify-content-end">Totaalprijs: €@Model.OrderProducts.Sum(op => op.Product.Price * op.Quantity).ToString("F2")</div>
         </div>
     </div>
-</div>
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <div class="container bg-light border rounded border-2 border-dark p-3">
+                <div class="row">
+                    <div class="h4 col-4">Leverings status</div>
+                    <div class="h5 col-2">Bezorgmethode:</div>
+                    <div class="h5 col-3">PostNL<div class="badge ms-2 bg-warning rounded 2">+Track&Trace</div><div class="h6">Standaard levering(3-5 werkdagen)</div></div>
+                </div>
+                <div class="row">
+                    <div class="h5 col-4">Track&Trace code: 3DS37H289Y2Y48YH</div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="progress" style="height:30px">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:60%"></div>
+						</div>
+					</div>
+                </div>
+			</div>
+        </div>
+	</div>
 
 
 <div>
-    <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
     <a class="btn btn-outline-primary" asp-action="Index">Back to List</a>
 </div>
