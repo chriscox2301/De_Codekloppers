@@ -157,15 +157,15 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 return NotFound();
             }
 
-            
-          
+
+
             if (ModelState.IsValid)
             {
-  
+
 
                 var order = await _context.Orders
-                     .Include(o => o.OrderProducts)
-                     .FirstOrDefaultAsync(o => o.Id == id);
+                 .Include(o => o.OrderProducts)
+                 .FirstOrDefaultAsync(o => o.Id == id);
                 try
                 {
                     order.OrderDate = model.OrderDate;
@@ -174,21 +174,22 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
 
                     order.OrderProducts.Clear();
 
-                    foreach (var productId in model.SelectedProductIds)
+
+
+
+
+                    foreach (var product in model.Products)
                     {
-                        var quantity = model.ProductQuantities.ContainsKey(productId) ? model.ProductQuantities[productId] : 1;
-                        if (quantity > 0)
+                        order.OrderProducts.Add(new OrderProduct
                         {
-                            order.OrderProducts.Add(new OrderProduct
-                            {
-                                ProductId = productId,
-                                Quantity = quantity,
-                            });
-                        }
-
-
-                        await _context.SaveChangesAsync();
+                            OrderId = order.Id,
+                            ProductId = product.ProductId,
+                            Quantity = product.Quantity
+                        });
                     }
+
+
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -201,10 +202,10 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                         throw;
                     }
                 }
-                TempData["Create"] = "Orderinformatie is succesvol aangepast "; 
+                TempData["Create"] = "Orderinformatie is succesvol aangepast ";
                 return RedirectToAction(nameof(Index));
             }
-            
+
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId);
             ViewBag.Products = await _context.Products.ToListAsync();
             return View(model);
