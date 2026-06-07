@@ -24,6 +24,7 @@ body {
 .form-orders {
     width : 100%;
     margin-bottom: 10px; 
+  
 
 }
 
@@ -37,8 +38,23 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+    width: 100%;
 }
+
+.product-info {
+    flex: 1;
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.product-actions input {
+        width: 80px;
+    }
+
 .Order-terug-index {
     position: fixed;
     right: 10%;
@@ -61,4 +77,25 @@ body {
     color: white; 
     padding-bottom: 10px; 
     padding-left: 10px; 
+}
+
+.ordernumber {
+ 
+    display: flex; 
+    justify-content: right; 
+    align-content: flex-end;
+}
+
+.width-input{
+    width: 100px; 
+}
+
+.HomeContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+h5 {
+    font-weight: bold;
 }

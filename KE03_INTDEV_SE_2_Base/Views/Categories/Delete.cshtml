@@ -30,10 +30,10 @@
             @Html.ValidationMessage("name")
         </span>
 
-        <div>
+        <div class="mt-3">
             <input type="hidden" asp-for="Id" />
             <input type="submit" value="Verwijderen" class="btn btn-danger" />
-            <a asp-action="Index">Annuleren</a>
+            <a asp-action="Index" class="btn btn-primary">Annuleren</a>
         </div>
     </form>
 </div>

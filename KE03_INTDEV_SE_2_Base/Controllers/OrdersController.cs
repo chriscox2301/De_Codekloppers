@@ -85,7 +85,18 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                             Quantity = quantity
                         });
                     }
+                foreach (var item in model.Products)
+                {
+                    order.OrderProducts.Add(
+                        new OrderProduct
+                        {
+                            ProductId = item.ProductId,
+                            Quantity = item.Quantity
+                        });
                 }
+
+
+
 
                 _context.Orders.Add(order);
 
@@ -130,9 +141,14 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 ProductQuantities = order.OrderProducts
                 .ToDictionary(op => op.ProductId, op => op.Quantity)
             };
+
+
+    
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
             ViewBag.Products = await _context.Products.ToListAsync();
-         
+
+          
+
             return View(model);
         }
 

@@ -16,6 +16,8 @@ namespace DataAccessLayer
         public DbSet<Part> Parts { get; set; }
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>()
