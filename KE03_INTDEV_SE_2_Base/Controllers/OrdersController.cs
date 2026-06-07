@@ -74,46 +74,32 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                     CustomerId = model.CustomerId
                 };
 
-                foreach (var productId in model.SelectedProductIds)
+                foreach (var item in model.Products)
                 {
-                    var quantity = model.ProductQuantities.ContainsKey(productId) ? model.ProductQuantities[productId] : 1;
-                    if (quantity > 0)
-                    {
-                        order.OrderProducts.Add(new OrderProduct
+                    order.OrderProducts.Add(
+                        new OrderProduct
                         {
-                            ProductId = productId,
-                            Quantity = quantity
+                            ProductId = item.ProductId,
+                            Quantity = item.Quantity
                         });
-                    }
-                    foreach (var item in model.Products)
-                    {
-                        order.OrderProducts.Add(
-                            new OrderProduct
-                            {
-                                ProductId = item.ProductId,
-                                Quantity = item.Quantity
-                            });
-                    }
-
-
-
-
-                    _context.Orders.Add(order);
-
-                    await _context.SaveChangesAsync();
-                    TempData["Create"] = "Order is succesvol aangemaakt";
-
-                    return RedirectToAction(nameof(Index));
                 }
 
 
-                ViewBag.Products = _context.Products.ToList();
 
-                ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId);
-                return View(model);
+
+                _context.Orders.Add(order);
+
+                await _context.SaveChangesAsync();
+                TempData["Create"] = "Order is succesvol aangemaakt";
+
+                return RedirectToAction(nameof(Index));
             }
 
-            return RedirectToAction(nameof(Index));
+
+            ViewBag.Products = _context.Products.ToList();
+
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId);
+            return View(model);
         }
 
         // GET: Orders/Edit/5
