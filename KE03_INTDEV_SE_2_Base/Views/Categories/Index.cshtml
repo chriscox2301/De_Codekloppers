@@ -9,8 +9,17 @@
 <h1>Categorieën</h1>
 
 <div class="d-flex flex-row justify-content-between mt-3">
-    <input type="text" class="form-control w-50" id="zoekterm" oninput="zoekbalk()" placeholder="Zoeken in categorieën" />
+    <div class="d-flex flex-row"> 
+    <input type="text" class="form-control w-75" id="zoekterm" oninput="zoekbalk()" placeholder="Zoeken in categorieën" />
+    <select name="cars" id="cars">
+        <option value="Filter 1">Filter 1</option>
+        <option value="Filter 2">Filter 2</option>
+        <option value="Filter 3">Filter 3</option>
+    </select>
+    </div>
+    <div>
     <a asp-action="Create" class="btn btn-primary">+ Toevoegen</a>
+    </div>
 </div>
 <div class="mt-2">
 <table class="table table-striped" id="categoryTable">
