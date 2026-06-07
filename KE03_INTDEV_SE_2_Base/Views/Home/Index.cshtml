@@ -40,7 +40,13 @@
                     <tr>    
                         <td>@product.ProductCode</td>
                         <td>@product.Name</td>
-                        <td>@product.Stock</td>
+                        <td>
+                            @if (product.Stock == null)
+                            {
+                                <text>Geen voorraad ingevoerd</text>
+                            }
+                            @product.Stock
+                        </td>
                     </tr>
                 }
             }
