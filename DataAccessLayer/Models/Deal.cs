@@ -10,6 +10,8 @@ namespace DataAccessLayer.Models
     {
         public int Id { get; set; }
         public string Type { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
         public Double? Discount { get; set; }
         public string Description { get; set; }
         public ICollection<Product> Products { get; set; } = new List<Product>();
