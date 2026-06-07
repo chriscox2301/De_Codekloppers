@@ -111,9 +111,9 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             }
 
             var order = await _context.Orders
-            .Include(o => o.OrderProducts)
-            .ThenInclude(op => op.Product)
-            .FirstOrDefaultAsync(o => o.Id == id); ;
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
             {
@@ -123,23 +123,27 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             {
                 Id = order.Id,
                 OrderDate = order.OrderDate,
-                CustomerId = order.CustomerId, 
-                SelectedProductIds = order.OrderProducts
-                .Select(op => op.ProductId)
-                .ToList(),
-                ProductQuantities = order.OrderProducts
-                .ToDictionary(op => op.ProductId, op => op.Quantity)
+                CustomerId = order.CustomerId,
+                Products = order.OrderProducts
+            .Select(op => new OrderProductViewModel
+            {
+                ProductId = op.ProductId,
+                Quantity = op.Quantity
+            })
+            .ToList()
+
             };
 
 
-    
+
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", order.CustomerId);
             ViewBag.Products = await _context.Products.ToListAsync();
 
-          
+
 
             return View(model);
         }
+
 
         // POST: Orders/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -160,8 +164,8 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
   
 
                 var order = await _context.Orders
-                 .Include(o => o.OrderProducts)
-                 .FirstOrDefaultAsync(o => o.Id == id);
+                     .Include(o => o.OrderProducts)
+                     .FirstOrDefaultAsync(o => o.Id == id);
                 try
                 {
                     order.OrderDate = model.OrderDate;
