@@ -1,0 +1,6 @@
+﻿.productDetails .form-control {
+    border: 1px solid #ced4da;
+    padding: 0.375rem 0.75rem;
+    background-color: hsl(0, 0%, 80%);
+    width: 40vh;
+}

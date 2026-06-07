@@ -89,3 +89,13 @@ body {
 .width-input{
     width: 100px; 
 }
+
+.HomeContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+h5 {
+    font-weight: bold;
+}

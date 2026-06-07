@@ -12,6 +12,7 @@ namespace DataAccessLayer.Models
         public DateTime TimeOfDelivery { get; set; }
         public int CourierId { get; set; }
         public int OrderId { get; set; }
+        public decimal TotalVolume { get; set; }
         public Courier Courier { get; set; }
         public Order Order { get; set; }
     }
