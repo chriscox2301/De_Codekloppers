@@ -23,7 +23,6 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            
             var matrixIncDbContext = _context.Orders.Include(o => o.Customer);
             return View(await matrixIncDbContext.ToListAsync());
         }
@@ -71,7 +70,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 var order = new Order
                 {
                     OrderDate = model.OrderDate,
-                    CustomerId = model.CustomerId
+                    CustomerId = model.CustomerId,
                 };
 
                 foreach (var item in model.Products)
@@ -84,9 +83,6 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                         });
                 }
 
-
-
-
                 _context.Orders.Add(order);
 
                 await _context.SaveChangesAsync();
@@ -95,10 +91,10 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-
             ViewBag.Products = _context.Products.ToList();
 
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", model.CustomerId);
+
             return View(model);
         }
 

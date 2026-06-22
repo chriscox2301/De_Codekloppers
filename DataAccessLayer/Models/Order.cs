@@ -13,9 +13,12 @@ namespace DataAccessLayer.Models
 
         public DateTime OrderDate { get; set; }
 
+        public int? ShiftId { get; set; }
+
         public int CustomerId { get; set; }
 
         public Customer Customer { get; set; } = null!;
+        public Shift? Shift { get; set; }
         public ICollection<OrderProduct> OrderProducts { get; } = new List<OrderProduct>();
     }
 }

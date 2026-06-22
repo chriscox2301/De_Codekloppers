@@ -29,15 +29,6 @@ namespace DataAccessLayer
             };
             context.Customers.AddRange(customers);
 
-            var orders = new Order[]
-            {
-                new Order { Customer = customers[0], OrderDate = DateTime.Parse("2021-01-01")},
-                new Order { Customer = customers[0], OrderDate = DateTime.Parse("2021-02-01")},
-                new Order { Customer = customers[1], OrderDate = DateTime.Parse("2021-02-01")},
-                new Order { Customer = customers[2], OrderDate = DateTime.Parse("2021-03-01")}
-            };  
-            context.Orders.AddRange(orders);
-
             var Categories = new Category[]
             {
                 new Category { Name = "Smartphones", Description = "De nieuwste mobiele telefoons en accessoires." },
@@ -65,7 +56,35 @@ namespace DataAccessLayer
 
             context.Parts.AddRange(parts);
 
-           
+            var Courier = new Courier[]
+            {
+                new Courier { Name = "John Kremers", Active =  true },
+                new Courier { Name = "Marie van Heggen", Active = true },
+                new Courier { Name = "Dick Fabelen", Active = true}
+            };
+
+            context.Couriers.AddRange(Courier);
+
+            var Shift = new Shift[]
+            {
+                new Shift { CourierId = 1, Date = new DateTime(2026, 6, 22), VehicleId = 1 },
+                new Shift { CourierId = 1, Date = new DateTime(2026, 6, 23), VehicleId = 1 },
+                new Shift { CourierId = 2, Date = new DateTime(2026, 6, 22), VehicleId = 2 },
+                new Shift { CourierId = 3, Date = new DateTime(2026, 6, 23), VehicleId = 2 },
+            };
+
+            context.Shifts.AddRange(Shift);
+
+            context.SaveChanges();
+
+            var orders = new Order[]
+            {
+                new Order { Customer = customers[0], OrderDate = DateTime.Parse("2021-01-01"), ShiftId = 1},
+                new Order { Customer = customers[0], OrderDate = DateTime.Parse("2021-02-01"), ShiftId = 1},
+                new Order { Customer = customers[1], OrderDate = DateTime.Parse("2021-02-01"), ShiftId = 2},
+                new Order { Customer = customers[2], OrderDate = DateTime.Parse("2021-03-01"), ShiftId = 2}
+            };
+            context.Orders.AddRange(orders);
 
             context.SaveChanges();
 

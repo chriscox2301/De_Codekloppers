@@ -15,6 +15,8 @@ namespace DataAccessLayer
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Part> Parts { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet <Courier> Couriers { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
 
         //public DbSet<OrderProduct> OrderProducts { get; set; }
 
@@ -25,6 +27,9 @@ namespace DataAccessLayer
                 .WithOne(o => o.Customer)
                 .HasForeignKey(o => o.CustomerId).IsRequired();
 
+            modelBuilder.Entity<Order>()
+                .HasOne(s => s.Shift)
+                .WithMany(o => o.Orders);
 
             modelBuilder.Entity<Category>()
                  .HasMany(p => p.Products)
