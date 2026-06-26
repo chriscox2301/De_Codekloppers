@@ -21,8 +21,19 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         public async Task<IActionResult> Index()
         {
             var productsLowOnStock = await _context.Products.Where(p => p.Stock <= 50 || p.Stock == null).ToListAsync();
+            var recentOrders = await _context.Orders
+                .Include(o => o.Customer)
+                .OrderByDescending(o => o.OrderDate)
+                .Take(10)
+                .ToListAsync();
 
-            return View(productsLowOnStock);
+            var viewModel = new HomeViewModel
+            {
+                Products = productsLowOnStock,
+                Orders = recentOrders
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
