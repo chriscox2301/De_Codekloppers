@@ -135,10 +135,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const infoDiv = document.createElement("div");
         infoDiv.className = "product-info";
 
+        if (window.location.pathname.includes("Edit")) {
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+          
+
+            infoDiv.appendChild(checkbox);
+        } 
+
         const nameSpan = document.createElement("span");
         nameSpan.textContent = productText;
 
         infoDiv.appendChild(nameSpan);
+         
 
        
         const actionsDiv = document.createElement("div");
