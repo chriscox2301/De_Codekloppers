@@ -94,7 +94,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             //Wanneer categorie producten bevat mag hij niet verwijderd worden.
             if (category.Products.Count > 0)
             {
-                TempData["SuccessMessage"] = "Categorie mag niet verwijderd worden, bevat nog producten";
+                TempData["NoSuccessMessage"] = "Categorie mag niet verwijderd worden, bevat nog producten";
                 return RedirectToAction(nameof(Index));
             }
 

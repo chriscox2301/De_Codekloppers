@@ -4,36 +4,37 @@
     ViewData["Title"] = "Delete";
 }
 
-<h3>Weet u zeker dat u deze categorie wil verwijderen?</h3>
-
+<h3>Categorie Verwijderen</h3>
+<hr />
 <div>
-    <hr />
+    
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-1">
             Naam:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-11">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-1">
             Beschrijving:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-11">
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
     
     <form asp-action="Delete" method="post">
-        <label>Typ de naam van de categorie ter bevestiging</label>
-        <input type="text" name="name" class="form-control" />
+        <label>Vul de categorienaam ter bevestiging in:</label>
+        <input type="text" name="name" class="form-control w-50 mt-1" placeholder="Bijv. Schroeven" />
         <span class="text-danger">
             @Html.ValidationMessage("name")
         </span>
 
-        <div class="mt-3">
+        <div class="mt-3 d-flex justify-content-end col-6 gap-2">
             <input type="hidden" asp-for="Id" />
+            <a asp-action="Index" class="btn btn-secondary">Terug</a>
             <input type="submit" value="Verwijderen" class="btn btn-danger" />
-            <a asp-action="Index" class="btn btn-primary">Annuleren</a>
+            
         </div>
     </form>
 </div>
