@@ -21,19 +21,16 @@
 		<input type="text" id="searchInput" class="form-control" oninput="filterTable()" placeholder="Zoeken op klant">
 	</div>
 </div>
-<div class="d-flex justify-content-end">
-    <div class="btn-group d-flex justify-content-end">
-    <a class="btn btn-primary" asp-action="Create">Nieuw Order</a>
-	
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" >Sorteren</button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Oud->Nieuw</a></li>
-                <li><a class="dropdown-item" href="#">Nieuw->Oud</a></li>
-                <li><a class="dropdown-item" href="#"># Oplopend</a></li>
-                <li><a class="dropdown-item" href="#"># Aflopend</a></li>
-			    </ul>
-		</div>
+<div class="d-flex justify-content-end gap-2">
+	<a class="btn btn-primary" asp-action="Create">Nieuw Order</a>
+	<div class="btn-group">
+		<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" >Sorteren</button>
+		<ul class="dropdown-menu">
+			<li><a class="dropdown-item" href="#">Oud->Nieuw</a></li>
+			<li><a class="dropdown-item" href="#">Nieuw->Oud</a></li>
+			<li><a class="dropdown-item" href="#"># Oplopend</a></li>
+			<li><a class="dropdown-item" href="#"># Aflopend</a></li>
+		</ul>
 	</div>
 </div>
 <hr/>
