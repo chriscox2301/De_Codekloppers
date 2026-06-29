@@ -10,21 +10,26 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+
+            <div class="form-group mb-2">
                 Naam:
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control" placeholder="bijv. Schroeven"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                Beschrijving: 
-                <input asp-for="Description" class="form-control" />
+                Beschrijving:
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Opslaan" class="btn btn-primary" />
-                <a asp-action="Index">Terug</a>
+
+            <div class="form-group d-flex justify-content-end gap-2 mt-2">
+                <a asp-action="Index" class="btn btn-secondary">Terug</a>
+                <input type="submit" value="Opslaan" class="btn btn-success" />
             </div>
+
         </form>
     </div>
 </div>
