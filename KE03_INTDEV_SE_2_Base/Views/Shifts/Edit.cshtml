@@ -1,43 +1,52 @@
 ﻿@model DataAccessLayer.Models.Shift
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Shift bewerken";
 }
 
-<h1>Edit</h1>
-
-<h4>Shift</h4>
+<div class="h1 mb-3">Shift #@Html.DisplayFor(p => p.Id) Bewerken</div>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row">
+        <div class="col-md-4">
             <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
+                <label asp-for="Date" class="control-label">Datum</label>
                 <input asp-for="Date" class="form-control" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CourierId" class="control-label"></label>
-                <select asp-for="CourierId" class="form-control" asp-items="ViewBag.CourierId"></select>
+                <label asp-for="CourierId" class="control-label">Koerier</label>
+                <input type="hidden" asp-for="CourierId" id="courierIdInput" />
+                <div class="dropdown">
+                    <button class="btn btn-secondary bg-light border-1 border-dark dropdown-toggle form-control text-black" type="button" id="courierDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="courierDropdown">
+                        <li><a class="dropdown-item" href="#" data-courier-id="1" data-courier-name="John Kremers">John Kremers</a></li>
+                        <li><a class="dropdown-item" href="#" data-courier-id="2" data-courier-name="Marie van Heggen">Marie van Heggen</a></li>
+                        <li><a class="dropdown-item" href="#" data-courier-id="3" data-courier-name="Dick Fabelen">Dick Fabelen</a></li>
+                    </ul>
+                </div>
                 <span asp-validation-for="CourierId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VehicleId" class="control-label"></label>
+                <label asp-for="VehicleId" class="control-label">Voertuig ID</label>
                 <input asp-for="VehicleId" class="form-control" />
                 <span asp-validation-for="VehicleId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="row mt-3">
+        <div class="col">
+            <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+            <input type="submit" value="Opslaan" class="btn btn-primary ml-2" />
+        </div>
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

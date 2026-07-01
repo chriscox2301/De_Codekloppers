@@ -4,37 +4,47 @@
     ViewData["Title"] = "Delete";
 }
 
-<h3>Categorie Verwijderen</h3>
-<hr />
+<div class="h1">@Html.DisplayFor(p => p.Name) Verwijderen</div>
+
+<div class="fs-3">Weet je het zeker?</div>
 <div>
-    
-    <dl class="row">
-        <dt class = "col-sm-1">
-            Naam:
+    <hr />
+    <dl class="row fs-5">
+        <dt class = "col-sm-2">
+            Naam
         </dt>
-        <dd class = "col-sm-11">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-1">
-            Beschrijving:
+        <dt class = "col-sm-2">
+            Beschrijving
         </dt>
-        <dd class = "col-sm-11">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
+        <dt class="col-sm-2">
+            Aantal producten
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Products.Count)
+        </dd>
     </dl>
-    
-    <form asp-action="Delete" method="post">
-        <label>Vul de categorienaam ter bevestiging in:</label>
-        <input type="text" name="name" class="form-control w-50 mt-1" placeholder="Bijv. Schroeven" />
-        <span class="text-danger">
-            @Html.ValidationMessage("name")
-        </span>
 
-        <div class="mt-3 d-flex justify-content-end col-6 gap-2">
-            <input type="hidden" asp-for="Id" />
-            <a asp-action="Index" class="btn btn-secondary">Terug</a>
-            <input type="submit" value="Verwijderen" class="btn btn-danger" />
-            
+    <form asp-action="Delete" method="post">
+        <div class="form-group">
+            <label>Vul de categorienaam ter bevestiging in:</label>
+            <input type="text" name="name" class="form-control" style="max-width: 400px;" placeholder="@Html.DisplayNameFor(model => model.Name)" />
+            <span class="text-danger">
+                @Html.ValidationMessage("name")
+            </span>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <input type="hidden" asp-for="Id" />
+                <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            </div>
         </div>
     </form>
 </div>

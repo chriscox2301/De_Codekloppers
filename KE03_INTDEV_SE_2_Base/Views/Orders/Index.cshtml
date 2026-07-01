@@ -1,80 +1,68 @@
 ﻿@model IEnumerable<DataAccessLayer.Models.Order>
 
 @{
-    ViewData["Title"] = "Index";
-    
-}
-@if (TempData["Create"] != null)
-{
-    <h2 class="bevestigings-bericht">@TempData["Create"]</h2>
-}
-@if (TempData["Edit"] != null)
-{
-    <h2 class="bevestigings-bericht">@TempData["Edit"]</h2>
+	ViewData["Title"] = "Orders";
 }
 
-<h1>Orders</h1>
+<div class="h1 mb-3">Orders</div>
 
-
-<div class="d-flex justify-content-start">
-	<div class="d-flex w-25">
-		<input type="text" id="searchInput" class="form-control" oninput="filterTable()" placeholder="Zoeken op klant">
+<div class="flex-grow-1">
+	<div class="d-flex justify-content-end gap-2">
+		<div>
+			<input type="text" id="searchInput" class="form-control searchInput" placeholder="Zoek product..."
+				   oninput="filterTable()" style="width:250px" />
+		</div>
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Sorteren</button>
+			<ul class="dropdown-menu">
+				<li><a class="dropdown-item">Datum nieuw-oud</a></li>
+				<li><a class="dropdown-item">Datum oud-nieuw</a></li>
+				<li><a class="dropdown-item">Prijs laag-hoog</a></li>
+				<li><a class="dropdown-item">Prijs hoog-laag</a></li>
+			</ul>
+		</div>
+		<div class="ms-auto">
+			<a asp-action="Create" class="btn btn-primary">+ Nieuw order</a>
+		</div>
 	</div>
-</div>
-<div class="d-flex justify-content-end gap-2">
-	<a class="btn btn-primary" asp-action="Create">Nieuw Order</a>
-	<div class="btn-group">
-		<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" >Sorteren</button>
-		<ul class="dropdown-menu">
-			<li><a class="dropdown-item" href="#">Oud->Nieuw</a></li>
-			<li><a class="dropdown-item" href="#">Nieuw->Oud</a></li>
-			<li><a class="dropdown-item" href="#"># Oplopend</a></li>
-			<li><a class="dropdown-item" href="#"># Aflopend</a></li>
-		</ul>
-	</div>
-</div>
-<hr/>
-    <table id="orderTable" class="table">
-    <thead class="bg-secondary text-white">
-        <tr>
-            <th>
-                <input type="checkbox" class="form-check-input" id="selectAll" />
-            </th>
-            <th>
-                Order#
-            </th>
-            <th>
-                Order Datum
-            </th>
-            <th>
-                Klant
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>  
-            <td>
-                <input type="checkbox" class="form-check-input row-checkbox" />
-            </td>
-            <td>
-                #@Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.Name)
-            </td>
-            <td class="d-flex justify-content-between">
-                <a class="btn btn-outline-primary rounded-pill" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a class="btn btn-outline-info rounded-pill" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a class="btn btn-outline-danger rounded-pill" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+<hr />
+
+<table class="table" id="orderTable">
+	<thead class="bg-secondary text-white">
+		<tr>
+			<th style="width: 40px;">
+				<input type="checkbox" class="form-check-input" id="selectAll" />
+			</th>
+			<th>Order#</th>
+			<th>Order Datum</th>
+			<th>Klant</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td class="flex-md-grow-0">
+					<input type="checkbox" class="form-check-input row-checkbox" />
+				</td>
+				<td class="flex-md-grow-0">#@Html.DisplayFor(modelItem => item.Id)</td>
+				<td class="flex-md-grow-0">@Html.DisplayFor(modelItem => item.OrderDate)</td>
+				<td class="flex-md-grow-0">@Html.DisplayFor(modelItem => item.Customer.Name)</td>
+				<td class="flex-md-grow-0">
+					<a class="btn btn-primary rounded-3 px-2 py-0" asp-action="Edit" asp-route-id="@item.Id" title="Bewerk">
+						<i class="bi fs-4 bi-pencil"></i>
+					</a>
+					<a class="btn btn-info rounded-3 px-2 py-0" asp-action="Details" asp-route-id="@item.Id" title="Details">
+						<i class="bi fs-4 bi-eye"></i>
+					</a>
+					<a class="btn btn-danger rounded-3 px-2 py-0" asp-action="Delete" asp-route-id="@item.Id" title="Verwijderen">
+						<i class="bi fs-4 bi-trash"></i>
+					</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
 
 <script src="~/js/site.js"></script>

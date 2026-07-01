@@ -4,7 +4,7 @@
     ViewData["Title"] = "Product bewerken";
 }
 
-<h1>Product bewerken</h1>
+<div class="h1 mb-3">@Html.DisplayFor(p => p.Name) Bewerken</div>
 <hr />
 
 <form asp-action="Edit">
@@ -37,7 +37,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label">Categorie</label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select asp-for="CategoryId" asp-items="ViewBag.CategoryId" class="d-none" id="categorySelect"></select>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-outline-secondary bg-light text-black dropdown-toggle" data-bs-toggle="dropdown" id="categoryDropdown">
+                        Selecteer categorie
+                    </button>
+                    <ul class="dropdown-menu w-100" id="categoryMenu">
+                        @if (ViewBag.CategoryId != null)
+                        {
+                            @foreach (var item in (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.CategoryId)
+                            {
+                                <li><a class="dropdown-item" href="#" data-value="@item.Value">@item.Text</a></li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-8">

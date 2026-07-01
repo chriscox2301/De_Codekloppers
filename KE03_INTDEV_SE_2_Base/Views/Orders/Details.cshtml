@@ -1,103 +1,107 @@
 ﻿@model DataAccessLayer.Models.Order
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Order Details";
 }
 
+<div class="h1 mb-3">Order #@Html.DisplayFor(model => model.Id) Details</div>
+<hr />
 
+<div class="productDetails">
+	<div class="row">
+		<div class="col-md-6">
 
-<div>
-    <div class="h1">
-        Order#@Html.DisplayFor(model => model.Id)
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-6">
+			<div class="h5">Klantgegevens</div>
 
-            <div class="h5">Klantgegevens</div>
+			<div class="form-group">
+				<label class="control-label">Datum</label>
+				<div class="form-control border-1 border-secondary">
+					@Html.DisplayFor(model => model.OrderDate)
+				</div>
+			</div>
 
-            <div class="row">
+			<div class="form-group">
+				<label class="control-label">Klant</label>
+				<div class="form-control border-1 border-secondary">
+					@Html.DisplayFor(model => model.Customer.Name)
+				</div>
+			</div>
 
-                <div class="col-3 fw-bold">
-                Datum:
-                </div>
-
-                <div class="col-3">
-                    @Html.DisplayFor(model => model.OrderDate)
-                </div>
-                <div class="col-3 fw-bold">
-                Klant:
-                </div>
-
-				<div class="col-3">
-                @Html.DisplayFor(model => model.Customer.Name)
-			    </div>
-                <div class="col-3 fw-bold">
-                Adres:
-                </div>
-
-                <div class="col-3">
-                    @Html.DisplayFor(model => model.Customer.Address)
-                </div>
+			<div class="form-group">
+				<label class="control-label">Adres</label>
+				<div class="form-control border-1 border-secondary">
+					@Html.DisplayFor(model => model.Customer.Address)
+				</div>
 			</div>
 
 		</div>
 
-        <div class="col-6">
-            <div class="h5">Producten</div>
-            <table class="table table-borderless table-striped">
-                <thead class="bg-secondary text-white">
-                    <tr>
+		<div class="col-md-6">
+			<div class="h5">Producten</div>
+			<table class="table table-borderless table-striped">
+				<thead class="bg-secondary text-white">
+					<tr>
 						<th>Product</th>
 						<th>Aantal</th>
-                        <th>Prijs per stuk</th>						
-                    </tr>
-                </thead>
-                <tbody class="border rounded">
-                    @if (Model.OrderProducts.Any())
-                    {
-                        @foreach (var orderProduct in Model.OrderProducts)
-                        {
-                            <tr>
+						<th>Prijs per stuk</th>						
+					</tr>
+				</thead>
+				<tbody class="border rounded">
+					@if (Model.OrderProducts.Any())
+					{
+						@foreach (var orderProduct in Model.OrderProducts)
+						{
+							<tr>
 								<td>@orderProduct.Product.Name</td>
 								<td class="align-middle"><span class="d-flex fw-bold text-white w-50 justify-content-center bg-primary rounded-pill">@orderProduct.Quantity</span></td>
-                                <td>€@orderProduct.Product.Price.ToString("F2")</td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="4" class="text-center">Geen producten in deze order</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <div class="d-flex h5 justify-content-end">Totaalprijs: €@Model.OrderProducts.Sum(op => op.Product.Price * op.Quantity).ToString("F2")</div>
-        </div>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-12">
-            <div class="container bg-light border rounded border-2 border-dark p-3">
-                <div class="row">
-                    <div class="h4 col-4">Leverings status</div>
-                    <div class="h5 col-2">Bezorgmethode:</div>
-                    <div class="h5 col-3">Matrix Inc.<div class="badge ms-2 bg-warning rounded 2">+Track&Trace</div><div class="h6">Standaard levering(3-5 werkdagen)</div></div>
-                </div>
-                <div class="row">
-                    <div class="h5 col-4">Track&Trace code: 3DS37H289Y2Y48YH</div>
-                </div>
-                <div class="m-2" style="position: relative;">
+								<td>€@orderProduct.Product.Price.ToString("F2")</td>
+							</tr>
+						}
+					}
+					else
+					{
+						<tr>
+							<td colspan="4" class="text-center">Geen producten in deze order</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+			<div class="d-flex h5 justify-content-end">Totaalprijs: €@Model.OrderProducts.Sum(op => op.Product.Price * op.Quantity).ToString("F2")</div>
+		</div>
+	</div>
+	<hr />
+	<div class="row">
+		<div class="col-12">
+			<div class="container bg-light border rounded border-2 border-dark p-3">
+				<div class="row">
+					<div class="h4 col-4">Leverings status</div>
+					<div class="h5 col-2">Bezorgmethode:</div>
+					<div class="h5 col-3">Matrix Inc.<div class="badge ms-2 bg-warning rounded 2">+Track&Trace</div><div class="h6">Standaard levering(3-5 werkdagen)</div></div>
+				</div>
+				<div class="row">
+					<div class="h5 col-4">Track&Trace code: 3DS37H289Y2Y48YH</div>
+				</div>
+				<div class="m-2" style="position: relative;">
 					<div class="progress col-11 " style="height:30px">
 						<div class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width:50%"></div>
 					</div>
 					<div class="d-flex justify-content-between align-items-center" style="position: absolute; top: 0; left: 0; right: 0; height: 100%;">
 						<span class="rounded-pill border border-2 border-dark bg-primary p-3 text-white fw-bold" style="margin-left:-10px">Besteld</span>
 						<span class="rounded-pill bg-primary border border-2 border-dark p-3 text-white fw-bold">Verwerkt</span>
-                        <span class="rounded-pill bg-primary border border-2 border-dark p-3 text-white fw-bold">Onderweg</span>
+						<span class="rounded-pill bg-primary border border-2 border-dark p-3 text-white fw-bold">Onderweg</span>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row mt-3">
+		<div class="col">
+			<a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Bewerken</a>
+			<a asp-action="Index" class="btn btn-secondary">Terug naar lijst</a>
+		</div>
+	</div>
+</div>
 			</div>
         </div>
 	</div>

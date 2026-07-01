@@ -1,87 +1,94 @@
 ﻿@model IEnumerable<DataAccessLayer.Models.Category>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
-<div class="d-flex justify-content-between">
+<div class="h1 mb-3">Categorieën</div>
 
-    <div class="">
-        <h1>Categorieën</h1>
-    </div>
-
-    <div class="w-25">
-        @if(TempData["SuccessMessage"] != null)
-        {
-            <div class="border border-dark bg-success bg-opacity-50 p-2 text-center">
-                @TempData["SuccessMessage"]
-            </div>
-        }
-
-        else if(TempData["NoSuccessMessage"] != null)
-        {
-            <div class="border border-dark bg-danger bg-opacity-50 p-2 text-center">
-                @TempData["NoSuccessMessage"]
-            </div>
-        }
-    </div>  
-
-    
+<div class="d-flex justify-content-between align-items-center mb-3 gap-3">
+	<div>
+		<input type="text" id="zoekterm" class="form-control" placeholder="Zoek categorie..."
+			   oninput="zoekbalk()" style="width:250px" />
+	</div>
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Sorteren</button>
+		<ul class="dropdown-menu">
+			<li><a class="dropdown-item" href="#">ID Oplopend</a></li>
+			<li><a class="dropdown-item" href="#">ID Aflopend</a></li>
+			<li><a class="dropdown-item" href="#">Naam A-Z</a></li>
+			<li><a class="dropdown-item" href="#">Naam Z-A</a></li>
+		</ul>
+	</div>
+	<div class="ms-auto">
+		<a asp-action="Create" class="btn btn-primary">+ Categorie toevoegen</a>
+	</div>
 </div>
+
+@if(TempData["SuccessMessage"] != null)
+{
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		@TempData["SuccessMessage"]
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}
+else if(TempData["NoSuccessMessage"] != null)
+{
+	<div class="alert alert-danger alert-dismissible fade show" role="alert">
+		@TempData["NoSuccessMessage"]
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}
+
 <hr />
 
-<div class="d-flex flex-row justify-content-between mt-3">
-    <div class="d-flex flex-row w-50">
-        <input type="text" class="form-control w-100" id="zoekterm" oninput="zoekbalk()" placeholder="Zoeken..." />
-    </div>
-    <div>
-        <a asp-action="Create" class="btn btn-primary">+ Toevoegen</a>
-    </div>
-</div>
-<div class="mt-2">
-<table class="table table-striped" id="categoryTable">
-    <thead class="table-dark">
-        <tr>
-            <th>
-                    ID ▾
-            </th>
-            <th>
-                Naam
-            </th>
-            <th>
-                Beschrijving
-            </th>
-            <th class="text-center">
-                Aantal Producten
-            </th>
-            <th>
-
-            </th>
-        </tr>
-    </thead>
-    <tbody>
+<table class="table" id="categoryTable">
+	<thead class="bg-secondary text-white">
+		<tr>
+			<th>
+				<input type="checkbox" class="form-check-input" id="selectAll" />
+			</th>
+			<th>
+				Categorie#
+			</th>
+			<th>
+				Naam
+			</th>
+			<th>
+				Beschrijving
+			</th>
+			<th class="text-center">
+				Aantal Producten
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.Id
-            </td>
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @item.Description
-            </td>
-            <td class="text-center">
-                @item.Products.Count
-            </td>
-            <td>
-						<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
-							<img src="~/img/bin.png" width="25px" height="25px" />
-						</a>
-            </td>
-        </tr>
+		<tr>
+			<td class="flex-grow-0">
+				<input type="checkbox" class="form-check-input row-checkbox" />
+			</td>
+			<td class="flex-grow-0">
+				#@item.Id
+			</td>
+			<td class="flex-grow-0">
+				@item.Name
+			</td>
+			<td class="flex-grow-0">
+				@item.Description
+			</td>
+			<td class="text-center flex-grow-0">
+				@item.Products.Count
+			</td>
+			<td class="flex-grow-0">
+					<a class="btn btn-danger rounded-3 px-2 py-0" asp-action="Delete" asp-route-id="@item.Id" title="Verwijderen">
+						<i class="bi fs-4 bi-trash"></i>
+					</a>
+			</td>
+		</tr>
 }
-    </tbody>
+	</tbody>
 </table>
-</div>
+
 <script src="~/js/site.js"></script>

@@ -4,62 +4,117 @@
     ViewData["Title"] = "Producten";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="h1 mb-3">Producten</div>
+
     <div class="d-flex gap-2">
-        <input type="text" id="searchInput" class="form-control" placeholder="Zoek product..."
-               oninput="filterTable()" style="width: 250px;" />
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Sorteren</button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Filter 1</a></li>
-                <li><a class="dropdown-item" href="#">Filter 2</a></li>
-                <li><a class="dropdown-item" href="#">Filter 3</a></li>
-            </ul>
+        <!-- Sidebar met Filters -->
+        <div class="border rounded p-3 bg-light" style="min-width: 250px; max-width: 250px;">
+            <div class="h5 mb-3 fw-bold">Filters</div>
+            
+            <!-- Categorieën Filter -->
+            <div class="mb-4">
+                <div class="h6 text-white bg-secondary p-2 rounded">Categorieën</div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="catSmartphones">
+                    <label class="form-check-label" for="catSmartphones" style="cursor:pointer">Smartphones</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="catMonitors">
+                <label class="form-check-label" for="catAccessoires" style="cursor:pointer">Monitors</label>
+            </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="catAccessoires">
+                <label class="form-check-label" for="catAccessoires" style="cursor:pointer">Accessoires</label>
+                </div>
+            </div>
+
+            <!-- Prijsrange Filter -->
+            <div class="mb-4">
+                <div class="h6 text-white bg-secondary p-2 rounded">Prijsrange</div>
+            <div class="px-2">
+                <input type="range" id="priceRangeSlider" min="0" max="10000" value="0" class="form-range">
+                <div class="small">€0 - <span id="priceRangeValue">10000</span></div>
+                </div>
+            </div>
+
+            <!-- Reset Filters -->
+            <button type="button" class="btn btn-outline-primary btn-sm w-100">Filters wissen</button>
+        </div>
+
+        <!-- Hoofdcontent -->
+        <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center mb-3 gap-3">
+                <div>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Zoek product..."
+                           oninput="filterTable()" style="width:250px" />
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Sorteren</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item">Datum nieuw-oud</a></li>
+                        <li><a class="dropdown-item">Datum oud-nieuw</a></li>
+                        <li><a class="dropdown-item">Prijs laag-hoog</a></li>
+                        <li><a class="dropdown-item">Prijs hoog-laag</a></li>
+                    </ul>
+                </div>
+                <div class="ms-auto">
+                    <a asp-action="Create" class="btn btn-primary">+ Product toevoegen</a>
+                </div>
+            </div>
+            <hr />
+            <table class="table" id="productTable">
+                <thead class="bg-secondary text-white">
+                    <tr>
+                        <th style="width: 40px;">
+                            <input type="checkbox" class="form-check-input" id="selectAll" />
+                        </th>
+                        <th>Product</th>
+                        <th>Barcode</th>
+                        <th>Voorraad</th>
+                        <th>Categorie</th>
+                        <th>Prijs</th>
+                    <th><div class="btn btn-primary rounded-3 px-2 py-0"><i class="bi fs-4 bi-pencil"></i></div>
+                        <div class="btn btn-info rounded-3 px-2 py-0"><i class="bi text-white fs-4 bi-eye"></i></div>
+                        <div class="btn btn-danger rounded-3 px-2 py-0"><i class="bi fs-4 bi-trash"></i></div>
+                    </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="flex-md-grow-0">
+                                <input type="checkbox" class="form-check-input row-checkbox" />
+                            </td>
+                            <td class="flex-md-grow-0">@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td class="flex-md-grow-0">@Html.DisplayFor(modelItem => item.ProductCode)</td>
+                            <td class="flex-md-grow-0">
+                                @if (item.Stock == null)
+                                {
+                                    <text>Geen voorraad</text>
+                                }
+                                @Html.DisplayFor(modelItem => item.Stock)
+                            </td>
+                            <td class="flex-md-grow-0">@Html.DisplayFor(modelItem => item.Category.Name)</td>
+                            <td class="flex-md-grow-0">€@Html.DisplayFor(modelItem => item.Price)</td>
+                            <td class="flex-md-grow-0">
+                            <a class="btn btn-primary rounded-3 px-2 py-0" asp-action="Edit" asp-route-id="@item.Id" title="Bewerk">
+                                <i class="bi fs-4 bi-pencil"></i>
+                                </a>
+                            <a class="btn btn-info rounded-3 px-2 py-0" asp-action="Details" asp-route-id="@item.Id" title="Details">
+                                    <i class="bi text-white fs-4 bi-eye"></i>
+                                </a>
+                            <a class="btn btn-danger rounded-3 px-2 py-0" asp-action="Delete" asp-route-id="@item.Id" title="Verwijderen">
+                                <i class="bi fs-4 bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
-    <a asp-action="Create" class="btn btn-primary">+ Product toevoegen</a>
-</div>
-
-<table class="table table-hover" id="productTable">
-    <thead class="table-light">
-        <tr>
-            <th style="width: 40px;">
-                <input type="checkbox" class="form-check-input" id="selectAll" />
-            </th>
-            <th>Product</th>
-            <th>Product Code</th>
-            <th>Voorraad</th>
-            <th>Categorie</th>
-            <th>Prijs</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <input type="checkbox" class="form-check-input row-checkbox" />
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.ProductCode)</td>
-                <td>
-                    @if (item.Stock == null)
-                    {
-                        <text>Geen voorraad ingevoerd</text>
-                    }
-                    @Html.DisplayFor(modelItem => item.Stock)
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
-                <td>€@Html.DisplayFor(modelItem => item.Price)</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Bewerken</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Verwijderen</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
 <script src="~/js/site.js"></script>

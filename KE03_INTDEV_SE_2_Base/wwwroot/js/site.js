@@ -20,6 +20,73 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 //JavaScript Binck(Details+Delete+IndexOrders)
+document.addEventListener('DOMContentLoaded', function () {
+    const categorySelect = document.getElementById('categorySelect');
+    const categoryDropdown = document.getElementById('categoryDropdown');
+    const categoryMenu = document.getElementById('categoryMenu');
+
+    // Stel de huidige geselecteerde waarde in bij het laden
+    if (categorySelect && categoryDropdown) {
+        const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+        if (selectedOption && selectedOption.text) {
+            categoryDropdown.textContent = selectedOption.text;
+        }
+    }
+
+    // Voeg click event toe aan alle dropdown items
+    if (categoryMenu) {
+        categoryMenu.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const value = this.getAttribute('data-value');
+                const text = this.textContent;
+
+                // Update de hidden select
+                categorySelect.value = value;
+
+                // Update de dropdown button tekst
+                categoryDropdown.textContent = text;
+
+                // Sluit de dropdown
+                const dropdown = bootstrap.Dropdown.getInstance(categoryDropdown);
+                if (dropdown) {
+                    dropdown.hide();
+                }
+            });
+        });
+    }
+
+    // Courier dropdown voor Shifts Edit
+    const dropdownItems = document.querySelectorAll('.dropdown-item[data-courier-id]');
+    const courierIdInput = document.getElementById('courierIdInput');
+    const courierDropdownButton = document.getElementById('courierDropdown');
+
+    // Set initial button text if courier is already selected
+    if (courierIdInput && courierDropdownButton) {
+        const currentCourierId = courierIdInput.value;
+        if (currentCourierId) {
+            const selectedItem = document.querySelector(`[data-courier-id="${currentCourierId}"]`);
+            if (selectedItem) {
+                courierDropdownButton.textContent = selectedItem.getAttribute('data-courier-name');
+            }
+        }
+    }
+
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const courierId = this.getAttribute('data-courier-id');
+            const courierName = this.getAttribute('data-courier-name');
+
+            if (courierIdInput && courierDropdownButton) {
+                courierIdInput.value = courierId;
+                courierDropdownButton.textContent = courierName;
+            }
+        });
+    });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const selectAll = document.getElementById('selectAll');
     if (!selectAll) return;
@@ -30,6 +97,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+
+function priceRange() {
+    const slider = document.getElementById('priceRangeSlider');
+    const output = document.getElementById('priceRangeValue');
+
+    if (slider && output) {
+
+        output.textContent = '€' + slider.value;
+
+        // Voeg event listener toe voor updates
+        slider.addEventListener('input', function () {
+            output.textContent = '€' + this.value;
+        });
+    }
+}
+
+// Roep priceRange aan wanneer de pagina geladen is
+document.addEventListener('DOMContentLoaded', priceRange);
+
+
+
+function tooltip() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+}
 
 function filterTable() {
     const query = document.getElementById('searchInput').value.toLowerCase();

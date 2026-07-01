@@ -1,32 +1,28 @@
 ﻿@model DataAccessLayer.ViewModel.OrderViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Order toevoegen";
 }
-<div class="Order-terug-index">
-    <a asp-action="Index" class="btn btn-primary">
-        Terug naar lijst
-    </a>
-</div>
-<h1>Order Aanmaken</h1>
 
-
+<div class="h1 mb-3">Nieuwe order</div>
 <hr />
-<div class="row width-form-order">
-    <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group form-orders">
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
                 <label class="control-label">Orderdatum</label>
                 <input asp-for="OrderDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")" />
                 <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
-            <div class="form-group form-orders">
-                <label  class="control-label">Customer</label>
+            <div class="form-group">
+                <label class="control-label">Customer</label>
                 <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
             </div>
 
-            <div class="form-group form-orders">
+            <div class="form-group">
                 <label>Product</label>
 
                 <div class="d-flex gap-2">
@@ -41,7 +37,7 @@
 
                     </select>
                     <div class = "product-actions"> 
-                  
+
                     <button type="button"
                             id="addProductBtn"
                             class="btn btn-success">
@@ -58,14 +54,16 @@
             <ul id="productList" class="list-group-item "></ul>
 
             <div id="hiddenProductsContainer" class="producten-in-order"></div>
-
-
-            <div class="form-group  save-order">
-                <input type="submit" value="Opslaan" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+            <input type="submit" value="Toevoegen" class="btn btn-primary ml-2" />
+        </div>
+    </div>
+</form>
 
 
 

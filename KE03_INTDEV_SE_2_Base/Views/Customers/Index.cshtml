@@ -4,22 +4,44 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="h1 mb-3">Klanten</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<div class="d-flex justify-content-between align-items-center mb-3 gap-3">
+	<div>
+		<input type="text" id="searchInput" class="form-control" placeholder="Zoek klant..."
+			   oninput="filterTable()" style="width:250px" />
+	</div>
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Sorteren</button>
+		<ul class="dropdown-menu">
+			<li><a class="dropdown-item" href="#">Oud->Nieuw</a></li>
+			<li><a class="dropdown-item" href="#">Nieuw->Oud</a></li>
+			<li><a class="dropdown-item" href="#"># Oplopend</a></li>
+			<li><a class="dropdown-item" href="#"># Aflopend</a></li>
+		</ul>
+	</div>
+	<div class="ms-auto">
+		<a class="btn btn-primary" asp-action="Create">+ Klant toevoegen</a>
+	</div>
+</div>
+<hr/>
+<table id="orderTable" class="table">
+    <thead class="bg-secondary text-white">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <input type="checkbox" class="form-check-input" id="selectAll" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                Klant#
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Active)
+                Naam
+            </th>
+            <th>
+                Adres
+            </th>
+            <th>
+                Actief/Inactief
             </th>
             <th></th>
         </tr>
@@ -27,21 +49,35 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="flex-grow-0">
+                <input type="checkbox" class="form-check-input row-checkbox" />
+            </td>
+            <td class="flex-grow-0">
+                #@Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td class="flex-grow-0">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="flex-grow-0">
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
+            <td class="flex-grow-0">
+                <input type="checkbox" class="form-check-input" checked="checked" />
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td class="flex-grow-0">
+                    <a class="btn btn-primary rounded-3 px-2 py-0" asp-action="Edit" asp-route-id="@item.Id" title="Bewerk">
+                        <i class="bi fs-4 bi-pencil"></i>
+                    </a>
+                    <a class="btn btn-info rounded-3 px-2 py-0" asp-action="Details" asp-route-id="@item.Id" title="Details">
+                        <i class="bi fs-4 bi-eye"></i>
+                    </a>
+                    <a class="btn btn-danger rounded-3 px-2 py-0" asp-action="Delete" asp-route-id="@item.Id" title="Verwijderen">
+                        <i class="bi fs-4 bi-trash"></i>
+                    </a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<script src="~/js/site.js"></script>

@@ -1,35 +1,30 @@
 ﻿@model DataAccessLayer.ViewModel.OrderViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Order bewerken";
 }
-<div class="Order-terug-index">
-    <a asp-action="Index" class="btn btn-primary">
-        Terug naar lijst
-    </a>
-</div>
-<h1>Order Aanpassen</h1>
 
-
-<h5>Order Id = @Model.Id</h5>
+<div class="h1 mb-3">Order #@Model.Id Bewerken</div>
 <hr />
-<div class="row width-form-order">
-    <div class="col-md-6">
-        <form asp-action="Edit">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group form-orders">
-                <label  type = "date" class="control-label">Orderdatum</label>
+
+<form asp-action="Edit">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label type = "date" class="control-label">Orderdatum</label>
                 <input asp-for="OrderDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")"  />
                 <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
-            <div class="form-group form-orders">
+            <div class="form-group">
                 <label class="control-label">Customer</label>
                 <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
 
-             <div class="form-group form-orders">
+             <div class="form-group">
                 <label class="control-label">Shift: </label>
                 <select class="form-control" name="Shifts" id="Country">
                     <option value="1">John Kremer - 2026/06/22</option>
@@ -39,8 +34,8 @@
                 </select>
             </div> 
 
-            
-            <div class="form-group form-orders">
+
+            <div class="form-group">
                 <label class="control-label">Orderstatus: </label>
                 <select class="form-control" name="Status" id="Country">
                     <option value="1">Ontvangen</option>
@@ -72,13 +67,13 @@
             </div>
             <hr /> 
             <ul id="productList" class = "list-group-item">
-                
-                
+
+
                 @for (int i = 0; i < Model.Products.Count; i++)
- 
+
                 {
 
-                   
+
                     var orderProduct = Model.Products[i];
 
                     var product =
@@ -129,14 +124,16 @@
                 }
 
             </div>
-            <div class="form-group save-order">
-               
-                <input type="submit" value="Opslaan" class="btn btn-primary" />
-            </div>
-
-        </form>
+        </div>
     </div>
-</div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+            <input type="submit" value="Opslaan" class="btn btn-primary ml-2" />
+        </div>
+    </div>
+</form>
 
 
 

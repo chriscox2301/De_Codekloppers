@@ -1,38 +1,37 @@
 ﻿@model DataAccessLayer.Models.Category
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Categorie toevoegen";
 }
 
-<h1>Categorie Aanmaken</h1>
-
+<div class="h1 mb-3">Nieuwe categorie</div>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group mb-2">
-                Naam:
-                <input asp-for="Name" class="form-control" placeholder="bijv. Schroeven"/>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Naam</label>
+                <input asp-for="Name" class="form-control" placeholder="bijv. Schroeven" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-
             <div class="form-group">
-                Beschrijving:
-                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <label asp-for="Description" class="control-label">Beschrijving</label>
+                <textarea asp-for="Description" class="form-control" rows="6" placeholder="Beschrijving..."></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-
-            <div class="form-group d-flex justify-content-end gap-2 mt-2">
-                <a asp-action="Index" class="btn btn-secondary">Terug</a>
-                <input type="submit" value="Opslaan" class="btn btn-success" />
-            </div>
-
-        </form>
+        </div>
     </div>
-</div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+            <input type="submit" value="Toevoegen" class="btn btn-primary ml-2" />
+        </div>
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
