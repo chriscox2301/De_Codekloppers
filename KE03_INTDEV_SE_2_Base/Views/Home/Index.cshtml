@@ -5,7 +5,7 @@
 }
 <div class="HomeContainer">
     <div class="row">
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
             <h3>Producten met lage voorraad</h3>
             <table class="table table-striped table-hover">
                 <thead>
@@ -13,6 +13,8 @@
                         <th>#</th>
                         <th>Product naam</th>
                         <th>Voorraad</th>
+                        <th></th>
+                    
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +35,7 @@
                                         @product.Stock
                                     }
                                 </td>
+                                <td> <a class="btn btn-outline-primary rounded-pill" asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id">Edit</a> </td>
                             </tr>
                         }
                     }
@@ -45,7 +48,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
             <h3>Recente orders</h3>
             <table class="table table-striped table-hover">
                 <thead>
@@ -53,6 +56,7 @@
                         <th>#</th>
                         <th>Datum</th>
                         <th>Klant</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,6 +68,8 @@
                                 <td>#@order.Id</td>
                                 <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
                                 <td>@order.Customer.Name</td>
+                                <td> <a class="btn btn-outline-primary rounded-pill" asp-controller="Orders" asp-action="Edit" asp-route-id="@order.Id">Edit</a> </td> 
+
                             </tr>
                         }
                     }

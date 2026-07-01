@@ -24,6 +24,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         public async Task<IActionResult> Index()
         {
             var matrixIncDbContext = _context.Orders.Include(o => o.Customer);
+
             return View(await matrixIncDbContext.ToListAsync());
         }
 
@@ -53,8 +54,12 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
         public IActionResult Create()
         {
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name");
-            ViewBag.Products = _context.Products.ToList(); 
-            return View();
+            ViewBag.Products = _context.Products.ToList();
+            var model = new OrderViewModel
+            {
+                OrderDate = DateTime.Now
+            };
+            return View(model);
         }
 
         // POST: Orders/Create
@@ -69,7 +74,7 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
             {
                 var order = new Order
                 {
-                    OrderDate = model.OrderDate,
+                    OrderDate = DateTime.Now,
                     CustomerId = model.CustomerId,
                 };
 
@@ -164,9 +169,9 @@ namespace KE03_INTDEV_SE_2_Base.Controllers
                  .FirstOrDefaultAsync(o => o.Id == id);
                 try
                 {
-                    order.OrderDate = model.OrderDate;
+                    
                     order.CustomerId = model.CustomerId;
-
+                    
 
                     order.OrderProducts.Clear();
 
